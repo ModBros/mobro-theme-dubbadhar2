@@ -1,0 +1,13 @@
+.app {
+    background: black;
+}
+
+.component.card {
+    background: none;
+    color: white;
+}
+
+.react-grid-item > .react-resizable-handle::after {
+    border-right: 2px solid white;
+    border-bottom: 2px solid white;
+}

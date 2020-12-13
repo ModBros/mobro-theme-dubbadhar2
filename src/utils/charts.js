@@ -37,14 +37,13 @@ export function configureChartJS() {
 
                 let percent = chart.config.data?.datasets[0]?.data[0]
 
-
                 var oldFill = ctx.fillStyle;
                 var fontSize = (height / 4).toFixed(2);
 
                 ctx.restore();
                 ctx.textBaseline = "middle"
 
-                var value = percent % 1 ? percent.toFixed(1) : percent;
+                var value = percent;
 
                 let textX = Math.round(width / 2),
                     textY = (height + chart.chartArea.top) / 2;

@@ -16519,7 +16519,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()(_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default.a);
 // Module
-___CSS_LOADER_EXPORT___.push([module.i, ".app {\n  background: black;\n}\n\n.component.card {\n  background: none;\n  color: white;\n}\n\n.react-grid-item > .react-resizable-handle::after {\n  border-right: 2px solid white;\n  border-bottom: 2px solid white;\n}", "",{"version":3,"sources":["webpack://./src/styles/theme.scss"],"names":[],"mappings":"AAAA;EACI,iBAAA;AACJ;;AAEA;EACI,gBAAA;EACA,YAAA;AACJ;;AAEA;EACI,6BAAA;EACA,8BAAA;AACJ","sourcesContent":[".app {\n    background: black;\n}\n\n.component.card {\n    background: none;\n    color: white;\n}\n\n.react-grid-item > .react-resizable-handle::after {\n    border-right: 2px solid white;\n    border-bottom: 2px solid white;\n}\n"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.i, ".app {\n  background: black;\n  padding: 0;\n}\n\n.component.card {\n  background: none;\n  color: white;\n}\n.component.card > .component-body {\n  padding: 0;\n}\n\nh3 {\n  font-size: 120%;\n  margin-bottom: 0;\n}\n\n.react-grid-item > .react-resizable-handle::after {\n  border-right: 2px solid white;\n  border-bottom: 2px solid white;\n}", "",{"version":3,"sources":["webpack://./src/styles/theme.scss"],"names":[],"mappings":"AAAA;EACI,iBAAA;EACA,UAAA;AACJ;;AAEA;EACI,gBAAA;EACA,YAAA;AACJ;AACI;EACI,UAAA;AACR;;AAGA;EACI,eAAA;EACA,gBAAA;AAAJ;;AAGA;EACI,6BAAA;EACA,8BAAA;AAAJ","sourcesContent":[".app {\n    background: black;\n    padding: 0;\n}\n\n.component.card {\n    background: none;\n    color: white;\n\n    & > .component-body {\n        padding: 0;\n    }\n}\n\nh3 {\n    font-size: 120%;\n    margin-bottom: 0;\n}\n\n.react-grid-item > .react-resizable-handle::after {\n    border-right: 2px solid white;\n    border-bottom: 2px solid white;\n}\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -45164,6 +45164,205 @@ module.exports = function(module) {
 
 /***/ }),
 
+/***/ "./src/components/DoughnutWidget.jsx":
+/*!*******************************************!*\
+  !*** ./src/components/DoughnutWidget.jsx ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react_chartjs_2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react-chartjs-2 */ "./node_modules/react-chartjs-2/es/index.js");
+/* harmony import */ var react_chartjs_2__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react_chartjs_2__WEBPACK_IMPORTED_MODULE_0__);
+
+var AlignCenter = mobro.hooks.getComponent("shared.layout.align-center");
+var LoadingIndicator = mobro.hooks.getComponent("shared.loading-indicator");
+
+function DoughnutWidget(props) {
+  var config = props.config;
+  var channelData = mobro.utils.component.useBasicChannelListener(config === null || config === void 0 ? void 0 : config.channel);
+
+  if (!channelData) {
+    return /*#__PURE__*/React.createElement(AlignCenter, null, /*#__PURE__*/React.createElement(LoadingIndicator, {
+      className: "small"
+    }));
+  }
+
+  var options = {
+    cutoutPercentage: 75
+  };
+  var label = config !== null && config !== void 0 && config.label ? config.label : channelData.label;
+  var max = mobro.utils.channelData.isPercentageData(channelData) ? 100 : mobro.utils.channelData.extractValue(channelData, true, mobro.utils.channelData.extractRawMaxValue);
+
+  var data = function data(canvas) {
+    if (canvas.getAttribute("data-name") !== label) {
+      canvas.setAttribute("data-name", label);
+    }
+
+    if (canvas.getAttribute("data-unit") !== channelData.unit) {
+      canvas.setAttribute("data-unit", channelData.unit);
+    }
+
+    return {
+      datasets: [{
+        data: [mobro.utils.channelData.extractValue(channelData), mobro.utils.channelData.extractValue(channelData) - max],
+        backgroundColor: ['rgba(0, 255, 255, 1)', 'rgb(80,110,120)'],
+        borderWidth: 0
+      }]
+    };
+  };
+
+  return /*#__PURE__*/React.createElement(react_chartjs_2__WEBPACK_IMPORTED_MODULE_0__["Doughnut"], {
+    width: "100%",
+    height: "100%",
+    options: options,
+    data: data
+  });
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (DoughnutWidget);
+
+/***/ }),
+
+/***/ "./src/components/Fraction.jsx":
+/*!*************************************!*\
+  !*** ./src/components/Fraction.jsx ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var AlignCenter = mobro.hooks.getComponent("shared.layout.align-center");
+var LoadingIndicator = mobro.hooks.getComponent("shared.loading-indicator");
+
+function Fraction(props) {
+  var config = props.config;
+  var dividend = mobro.utils.component.useBasicChannelListener(config === null || config === void 0 ? void 0 : config.dividend);
+  var divisor = mobro.utils.component.useBasicChannelListener(config === null || config === void 0 ? void 0 : config.divisor);
+
+  if (!dividend || !divisor && !(config !== null && config !== void 0 && config.divisorManual)) {
+    return /*#__PURE__*/React.createElement(AlignCenter, null, /*#__PURE__*/React.createElement(LoadingIndicator, {
+      className: "small"
+    }));
+  }
+
+  var divisorDisplay = config !== null && config !== void 0 && config.divisorManual ? config.divisorManual : "".concat(mobro.utils.channelData.extractValue(divisor)).concat(mobro.utils.channelData.extractRawUnit(divisor));
+  return /*#__PURE__*/React.createElement("span", {
+    className: "w-100 d-flex align-items-center justify-content-center"
+  }, mobro.utils.channelData.extractValue(dividend), " / ", divisorDisplay);
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (Fraction);
+
+/***/ }),
+
+/***/ "./src/components/Gauge.jsx":
+/*!**********************************!*\
+  !*** ./src/components/Gauge.jsx ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react_chartjs_2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react-chartjs-2 */ "./node_modules/react-chartjs-2/es/index.js");
+/* harmony import */ var react_chartjs_2__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react_chartjs_2__WEBPACK_IMPORTED_MODULE_0__);
+
+var AlignCenter = mobro.hooks.getComponent("shared.layout.align-center");
+var LoadingIndicator = mobro.hooks.getComponent("shared.loading-indicator");
+
+var mapStateToProps = function mapStateToProps(state) {
+  return {
+    settings: mobro.reducers.settings.getSettings(state)
+  };
+};
+
+var defaultSettings = {
+  min: 0,
+  warning: 65,
+  critical: 80,
+  max: 100
+};
+
+function findMinMaxSettings(channelData, settings) {
+  var minMaxSettings = defaultSettings;
+
+  if (mobro["enum"].channelData.SENSOR_TYPE_TEMPERATURE !== channelData.sensortype) {
+    return minMaxSettings;
+  }
+
+  settings.hardware.temperature.forEach(function (item) {
+    if (item.hardwaretype === channelData._hardware.hardwaretype) {
+      minMaxSettings = item;
+    }
+  });
+  return minMaxSettings;
+}
+
+function Gauge(props) {
+  var config = props.config,
+      _props$settings = props.settings,
+      settings = _props$settings === void 0 ? {} : _props$settings;
+  var channelData = mobro.utils.component.useBasicChannelListener(config === null || config === void 0 ? void 0 : config.channel);
+
+  if (!channelData) {
+    return /*#__PURE__*/React.createElement(AlignCenter, null, /*#__PURE__*/React.createElement(LoadingIndicator, {
+      className: "small"
+    }));
+  }
+
+  var minMaxSettings = findMinMaxSettings(channelData, settings);
+  var max = Math.max(mobro.utils.channelData.extractValue(channelData, true, mobro.utils.channelData.extractRawMaxValue), minMaxSettings.max, defaultSettings.max);
+  var options = {
+    responsive: true,
+    cutoutPercentage: 75,
+    circumference: 1.6 * Math.PI,
+    rotation: -(1.3 * Math.PI),
+    breakpoints: {
+      min: minMaxSettings.min,
+      orange: minMaxSettings.warning,
+      red: minMaxSettings.critical,
+      max: max
+    }
+  };
+  var label = config !== null && config !== void 0 && config.label ? config.label : channelData.label;
+
+  var data = function data(canvas) {
+    if (canvas.getAttribute("data-name") !== label) {
+      canvas.setAttribute("data-name", label);
+    }
+
+    if (canvas.getAttribute("data-unit") !== channelData.unit) {
+      canvas.setAttribute("data-unit", channelData.unit);
+    }
+
+    if (!canvas.getAttribute("data-border")) {
+      canvas.setAttribute("data-border", "margins");
+    }
+
+    return {
+      datasets: [{
+        data: [mobro.utils.channelData.extractValue(channelData), mobro.utils.channelData.extractValue(channelData) - max],
+        backgroundColor: ['rgba(0, 255, 30, 1)', 'rgb(80,110,120)'],
+        borderWidth: 0
+      }]
+    };
+  };
+
+  return /*#__PURE__*/React.createElement(react_chartjs_2__WEBPACK_IMPORTED_MODULE_0__["Doughnut"], {
+    width: "100%",
+    height: "70%",
+    data: data,
+    options: options
+  });
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (mobro.lib.component.container.create("theme.gauge", Gauge).connect(mapStateToProps).generate());
+
+/***/ }),
+
 /***/ "./src/components/HardwareTitle.jsx":
 /*!******************************************!*\
   !*** ./src/components/HardwareTitle.jsx ***!
@@ -45223,15 +45422,20 @@ function LineChart(props) {
   var config = props.config;
   var limit = 14;
 
-  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_2__["useState"])([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
+  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_2__["useState"])(null),
       _useState2 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1___default()(_useState, 2),
-      historyData = _useState2[0],
-      setHistoryData = _useState2[1];
+      channelData = _useState2[0],
+      setChannelData = _useState2[1];
 
-  var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_2__["useState"])([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]),
+  var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_2__["useState"])([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
       _useState4 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1___default()(_useState3, 2),
-      labels = _useState4[0],
-      setLabels = _useState4[1];
+      historyData = _useState4[0],
+      setHistoryData = _useState4[1];
+
+  var _useState5 = Object(react__WEBPACK_IMPORTED_MODULE_2__["useState"])([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]),
+      _useState6 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1___default()(_useState5, 2),
+      labels = _useState6[0],
+      setLabels = _useState6[1];
 
   mobro.utils.component.useChannelListener(config === null || config === void 0 ? void 0 : config.channel, function (data) {
     historyData.push(mobro.utils.channelData.extractValue(data));
@@ -45242,16 +45446,18 @@ function LineChart(props) {
       labels.shift();
     }
 
+    setChannelData(data);
     setHistoryData(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_0___default()(historyData));
     setLabels(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_0___default()(labels));
   });
 
-  if (mobro.utils.helper.empty(historyData) || historyData.length < 3) {
+  if (mobro.utils.helper.empty(historyData) || historyData.length < 3 || !channelData) {
     return /*#__PURE__*/React.createElement(AlignCenter, null, /*#__PURE__*/React.createElement(LoadingIndicator, {
       className: "small"
     }));
   }
 
+  var label = config !== null && config !== void 0 && config.label ? config.label : channelData.label;
   var animation = {
     duration: 750,
     easing: 'linear'
@@ -45291,7 +45497,7 @@ function LineChart(props) {
     }
   };
 
-  var data = function data(canvas) {
+  var data = function data() {
     return {
       labels: labels,
       datasets: [{
@@ -45305,13 +45511,36 @@ function LineChart(props) {
     };
   };
 
-  return /*#__PURE__*/React.createElement(react_chartjs_2__WEBPACK_IMPORTED_MODULE_3__["Line"], {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "d-flex flex-column w-100"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "w-100 d-flex align-items-center justify-content-between mb-2"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-left d-block"
+  }, label, " - ", /*#__PURE__*/React.createElement("span", null, mobro.utils.channelData.extractRawUnit(channelData))), /*#__PURE__*/React.createElement("h3", {
+    className: "text-right"
+  }, mobro.utils.channelData.extractValue(channelData))), /*#__PURE__*/React.createElement("div", {
+    className: "d-flex flex-fill position-relative"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "position-absolute w-100 h-100"
+  }, /*#__PURE__*/React.createElement(react_chartjs_2__WEBPACK_IMPORTED_MODULE_3__["Line"], {
     data: data,
     options: options
-  });
+  }))));
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (LineChart);
+
+/***/ }),
+
+/***/ "./src/icons/chart_gauge.svg":
+/*!***********************************!*\
+  !*** ./src/icons/chart_gauge.svg ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 26 26\"><g id=\"Layer_2\" data-name=\"Layer 2\"><g id=\"Layer_2-2\" data-name=\"Layer 2\"><path d=\"M3.74,19.38a10,10,0,1,1,18.57-.11\" style=\"fill:none;stroke:currentColor;stroke-linejoin:round;stroke-width:2px\"></path><path d=\"M13,19.38,6.32,12.5\" style=\"fill:none;stroke:currentColor;stroke-linejoin:round;stroke-width:2px\"></path><rect x=\"12\" y=\"18.38\" width=\"2\" height=\"2\" rx=\"1\" style=\"fill:none;stroke:currentColor;stroke-linejoin:round;stroke-width:2px\"></rect></g><g id=\"Layer_3\" data-name=\"Layer 3\"><rect width=\"26\" height=\"26\" style=\"fill:none\"></rect></g></g></svg>"
 
 /***/ }),
 
@@ -45373,8 +45602,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var theme_components_LineChart__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! theme/components/LineChart */ "./src/components/LineChart.jsx");
 /* harmony import */ var theme_icons_chart_line_svg__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! theme/icons/chart_line.svg */ "./src/icons/chart_line.svg");
 /* harmony import */ var theme_icons_chart_line_svg__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(theme_icons_chart_line_svg__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var theme_components_HardwareTitle__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! theme/components/HardwareTitle */ "./src/components/HardwareTitle.jsx");
-/* harmony import */ var theme_styles_theme_scss__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! theme/styles/theme.scss */ "./src/styles/theme.scss");
+/* harmony import */ var theme_icons_chart_gauge_svg__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! theme/icons/chart_gauge.svg */ "./src/icons/chart_gauge.svg");
+/* harmony import */ var theme_icons_chart_gauge_svg__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(theme_icons_chart_gauge_svg__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var theme_components_HardwareTitle__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! theme/components/HardwareTitle */ "./src/components/HardwareTitle.jsx");
+/* harmony import */ var theme_components_Fraction__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! theme/components/Fraction */ "./src/components/Fraction.jsx");
+/* harmony import */ var theme_styles_theme_scss__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! theme/styles/theme.scss */ "./src/styles/theme.scss");
+/* harmony import */ var theme_components_Gauge__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! theme/components/Gauge */ "./src/components/Gauge.jsx");
+/* harmony import */ var theme_components_DoughnutWidget__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! theme/components/DoughnutWidget */ "./src/components/DoughnutWidget.jsx");
+
+
+
+
 
 
 
@@ -45385,12 +45623,20 @@ __webpack_require__.r(__webpack_exports__);
 
 mobro__WEBPACK_IMPORTED_MODULE_2___default.a.hooks.component("container", function (Component) {
   return function (props) {
-    var _props$config;
+    var _props$config, _props$config2, _props$config3;
 
     var style = props.style || {};
 
     if (((_props$config = props.config) === null || _props$config === void 0 ? void 0 : _props$config.width) < 600) {
       style.fontSize = "12px";
+    }
+
+    if (((_props$config2 = props.config) === null || _props$config2 === void 0 ? void 0 : _props$config2.width) < 500) {
+      style.fontSize = "10px";
+    }
+
+    if (((_props$config3 = props.config) === null || _props$config3 === void 0 ? void 0 : _props$config3.width) < 400) {
+      style.fontSize = "8px";
     }
 
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(Component, _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({}, props, {
@@ -45402,9 +45648,10 @@ mobro__WEBPACK_IMPORTED_MODULE_2___default.a.hooks.addDataComponent({
   name: "hardware-title",
   label: "Hardware Title",
   icon: "widget.text",
-  component: theme_components_HardwareTitle__WEBPACK_IMPORTED_MODULE_6__["default"],
+  component: theme_components_HardwareTitle__WEBPACK_IMPORTED_MODULE_7__["default"],
   config: {
     channel: {
+      info: "Choose the first data value of the hardware, which's name you want to display",
       type: "channel"
     }
   }
@@ -45416,8 +45663,60 @@ mobro__WEBPACK_IMPORTED_MODULE_2___default.a.hooks.addDataComponent({
   icon: "widget.line_chart",
   component: theme_components_LineChart__WEBPACK_IMPORTED_MODULE_4__["default"],
   config: {
+    label: {
+      type: "input"
+    },
     channel: {
       type: "channel"
+    }
+  }
+});
+mobro__WEBPACK_IMPORTED_MODULE_2___default.a.utils.icons.addIcon("widget.gauge", theme_icons_chart_gauge_svg__WEBPACK_IMPORTED_MODULE_6___default.a);
+mobro__WEBPACK_IMPORTED_MODULE_2___default.a.hooks.addDataComponent({
+  name: "gauge",
+  label: "Gauge",
+  icon: "widget.gauge",
+  component: theme_components_Gauge__WEBPACK_IMPORTED_MODULE_10__["default"],
+  config: {
+    label: {
+      type: "input"
+    },
+    channel: {
+      type: "channel"
+    }
+  }
+});
+mobro__WEBPACK_IMPORTED_MODULE_2___default.a.hooks.addDataComponent({
+  name: "doughnut",
+  label: "Doughnut",
+  icon: "widget.gauge",
+  component: theme_components_DoughnutWidget__WEBPACK_IMPORTED_MODULE_11__["default"],
+  config: {
+    label: {
+      type: "input"
+    },
+    channel: {
+      type: "channel"
+    }
+  }
+});
+mobro__WEBPACK_IMPORTED_MODULE_2___default.a.hooks.addDataComponent({
+  name: "fraction",
+  label: "Fraction (x / y)",
+  icon: "widget.data_value",
+  component: theme_components_Fraction__WEBPACK_IMPORTED_MODULE_8__["default"],
+  config: {
+    dividend: {
+      info: "Symbolizes the used amount (x / 14Gb)",
+      type: "channel"
+    },
+    divisor: {
+      info: "Symolizes the maximum value which can be achieved (4 / xGb)",
+      type: "channel"
+    },
+    divisorManual: {
+      info: "If you don't have a value for divisor, you can use this to set the value manually",
+      type: "input"
     }
   }
 });
@@ -45479,7 +45778,7 @@ function configureChartJS() {
         var fontSize = (height / 4).toFixed(2);
         ctx.restore();
         ctx.textBaseline = "middle";
-        var value = percent % 1 ? percent.toFixed(1) : percent;
+        var value = percent;
         var textX = Math.round(width / 2),
             textY = (height + chart.chartArea.top) / 2;
         ctx.font = fontSize / 3 + "px sans-serif";

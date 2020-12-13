@@ -10,6 +10,7 @@ function LineChart(props) {
     } = props;
 
     const limit = 14;
+    const [channelData, setChannelData] = useState(null);
     const [historyData, setHistoryData] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
     const [labels, setLabels] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]);
 
@@ -22,13 +23,16 @@ function LineChart(props) {
             labels.shift();
         }
 
+        setChannelData(data);
         setHistoryData([...historyData]);
         setLabels([...labels]);
     });
 
-    if (mobro.utils.helper.empty(historyData) || historyData.length < 3) {
+    if (mobro.utils.helper.empty(historyData) || historyData.length < 3 || !channelData) {
         return (<AlignCenter><LoadingIndicator className={"small"}/></AlignCenter>)
     }
+
+    const label = config?.label ? config.label : channelData.label;
 
     const animation = {
         duration: 750,
@@ -63,7 +67,7 @@ function LineChart(props) {
         }
     };
 
-    const data = (canvas) => {
+    const data = () => {
         return {
             labels: labels,
             datasets: [{
@@ -78,7 +82,20 @@ function LineChart(props) {
     };
 
     return (
-        <Line data={data} options={options}/>
+        <div className={"d-flex flex-column w-100"}>
+            <div className={"w-100 d-flex align-items-center justify-content-between mb-2"}>
+                <span className="text-left d-block">{label} - <span>{mobro.utils.channelData.extractRawUnit(channelData)}</span></span>
+                <h3 className="text-right">
+                    {mobro.utils.channelData.extractValue(channelData)}
+                </h3>
+            </div>
+
+            <div className={"d-flex flex-fill position-relative"}>
+                <div className={"position-absolute w-100 h-100"}>
+                    <Line data={data} options={options}/>
+                </div>
+            </div>
+        </div>
     );
 }
 

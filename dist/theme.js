@@ -45294,7 +45294,9 @@ function findMinMaxSettings(channelData, settings) {
   }
 
   settings.hardware.temperature.forEach(function (item) {
-    if (item.hardwaretype === channelData._hardware.hardwaretype) {
+    var _channelData$_hardwar;
+
+    if (item.hardwaretype === (channelData === null || channelData === void 0 ? void 0 : (_channelData$_hardwar = channelData._hardware) === null || _channelData$_hardwar === void 0 ? void 0 : _channelData$_hardwar.hardwaretype)) {
       minMaxSettings = item;
     }
   });
@@ -45376,6 +45378,8 @@ var AlignCenter = mobro.hooks.getComponent("shared.layout.align-center");
 var LoadingIndicator = mobro.hooks.getComponent("shared.loading-indicator");
 
 function HardwareTitle(props) {
+  var _channelData$_hardwar;
+
   var config = props.config;
   var channelData = mobro.utils.component.useBasicChannelListener(config === null || config === void 0 ? void 0 : config.channel);
 
@@ -45385,9 +45389,10 @@ function HardwareTitle(props) {
     }));
   }
 
+  console.log(channelData);
   return /*#__PURE__*/React.createElement("span", {
     className: "w-100 d-flex align-items-center justify-content-center"
-  }, channelData._hardware.title);
+  }, channelData === null || channelData === void 0 ? void 0 : (_channelData$_hardwar = channelData._hardware) === null || _channelData$_hardwar === void 0 ? void 0 : _channelData$_hardwar.title);
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (HardwareTitle);

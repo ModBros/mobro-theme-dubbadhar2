@@ -22,7 +22,7 @@ function findMinMaxSettings(channelData, settings) {
     }
 
     settings.hardware.temperature.forEach((item) => {
-        if (item.hardwaretype === channelData._hardware.hardwaretype) {
+        if (item.hardwaretype === channelData?._hardware?.hardwaretype) {
             minMaxSettings = item;
         }
     });

@@ -11,7 +11,6 @@ export function configureChartJS() {
                 ctx = chart.chart.ctx,
                 type = chart.config.type;
 
-
             if (type == 'line') {
                 var min = Math.min(...chart.config.data?.datasets[0]?.data);
                 var max = Math.max(...chart.config.data?.datasets[0]?.data);
@@ -25,9 +24,6 @@ export function configureChartJS() {
                     chart.config.options.scales.yAxes[0].ticks.max = max + 1;
                     chart.config.options.scales.yAxes[0].ticks.min = Math.max(min, 0);
                 }
-
-
-                chart.update()
             }
 
             if (type == 'doughnut') {
@@ -77,7 +73,7 @@ export function configureChartJS() {
                     }
                 }
 
-                chart.update()
+                ctx.save();
             }
         },
         afterDraw: function (chart) {
@@ -87,9 +83,6 @@ export function configureChartJS() {
                 type = chart.config.type;
 
             if (type == 'doughnut' && chart.canvas.getAttribute('data-border') === 'margins') {
-
-                let doughnutlenght = chart.chart.config.options.circumference;
-
                 let lineWidth = chart.radiusLength / 4;
                 ctx.lineWidth = lineWidth;
 

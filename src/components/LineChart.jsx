@@ -6,7 +6,8 @@ const LoadingIndicator = mobro.hooks.getComponent("shared.loading-indicator");
 
 function LineChart(props) {
     const {
-        config
+        config,
+        layoutConfig
     } = props;
 
     const limit = 14;
@@ -39,6 +40,8 @@ function LineChart(props) {
         easing: 'linear'
     };
 
+    const widgetFontColor = config?.widgetFontColor || layoutConfig?.widgetFontColor
+
     const options = {
         maintainAspectRatio: false,
         tooltips: {enabled: false},
@@ -62,6 +65,7 @@ function LineChart(props) {
                 },
                 ticks: {
                     mirror: true,
+                    fontColor: !widgetFontColor ? "white" : `rgba(${widgetFontColor.r}, ${widgetFontColor.g}, ${widgetFontColor.b}, ${widgetFontColor.a})`
                 }
             }]
         }
@@ -73,7 +77,7 @@ function LineChart(props) {
             datasets: [{
                 lineTension: 0,
                 data: historyData,
-                borderColor: 'rgba(15, 150, 200, 1)',
+                borderColor: !config?.lineColor ? 'rgba(15, 150, 200, 1)' : `rgba(${config.lineColor.r}, ${config.lineColor.g}, ${config.lineColor.b}, ${config.lineColor.a})`,
                 borderWidth: 2,
                 pointRadius: '0',
                 fill: false
@@ -99,4 +103,10 @@ function LineChart(props) {
     );
 }
 
-export default LineChart;
+const mapStateToProps = (state) => ({
+    layoutConfig: mobro.reducers.layout.getLayoutConfig(state)
+});
+
+export default mobro.lib.component.container.create("theme.widget.line-chart", LineChart)
+    .connect(mapStateToProps)
+    .generate();

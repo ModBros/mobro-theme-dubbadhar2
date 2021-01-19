@@ -27,25 +27,17 @@ export function configureChartJS() {
             }
 
             if (type == 'doughnut') {
-                // var percent = Math.round((chart.config.data.datasets[0].data[0] * 100) /
-                //     (chart.config.data.datasets[0].data[0] +
-                //         chart.config.data.datasets[0].data[1]));
-
-                let percent = chart.config.data?.datasets[0]?.data[0]
-
                 var oldFill = ctx.fillStyle;
                 var fontSize = (height / 4).toFixed(2);
 
                 ctx.restore();
                 ctx.textBaseline = "middle"
 
-                var value = percent;
-
                 let textX = Math.round(width / 2),
                     textY = (height + chart.chartArea.top) / 2;
 
                 ctx.font = fontSize / 3 + "px sans-serif";
-                ctx.fillStyle = "#FFF";
+                ctx.fillStyle = chart.canvas.getAttribute("data-label-color") || "#FFF";
 
                 ctx.textAlign = "center";
 
@@ -58,20 +50,8 @@ export function configureChartJS() {
                 ctx.font = fontSize + "px sans-serif";
                 ctx.fillStyle = chart.config.data?.datasets?.[0]?.backgroundColor[0];
                 ctx.textAlign = "center";
-                ctx.fillText(value, textX, textY + height / 30);
+                ctx.fillText(chart.config.data?.datasets[0]?.data[0], textX, textY + height / 30);
                 ctx.fillStyle = oldFill;
-
-                if (chart.canvas.getAttribute('data-border') === 'margins') {
-                    if (percent < chart.config.options.breakpoints.orange) {
-                        chart.config.data.datasets[0].backgroundColor[0] = 'rgba(0, 255, 30, 1)'
-                    }
-                    if (percent > chart.config.options.breakpoints.orange) {
-                        chart.config.data.datasets[0].backgroundColor[0] = 'rgba(255, 255, 30, 1)'
-                    }
-                    if (percent > chart.config.options.breakpoints.red) {
-                        chart.config.data.datasets[0].backgroundColor[0] = 'rgba(255, 0, 0, 1)'
-                    }
-                }
 
                 ctx.save();
             }
@@ -86,24 +66,25 @@ export function configureChartJS() {
                 let lineWidth = chart.radiusLength / 4;
                 ctx.lineWidth = lineWidth;
 
+                const max = parseInt(chart.canvas.getAttribute("data-max")) || 100;
+
                 //green path
-                ctx.strokeStyle = "#00ff1e";
+                ctx.strokeStyle = chart.chart.config.options.breakpointColors.base;
                 ctx.beginPath();
-                ctx.arc(width / 2, (height / 2) + height / 21.05, chart.chart.controller.outerRadius - lineWidth / 2, chart.chart.config.options.rotation, chart.chart.config.options.rotation + chart.chart.config.options.circumference * chart.chart.config.options.breakpoints.orange / 100);
+                ctx.arc(width / 2, (height / 2) + height / 21.05, chart.chart.controller.outerRadius - lineWidth / 2, chart.chart.config.options.rotation, chart.chart.config.options.rotation + chart.chart.config.options.circumference * chart.chart.config.options.breakpoints.orange / max);
                 ctx.stroke();
 
                 //yellow path
-                ctx.strokeStyle = "#FFFF00";
+                ctx.strokeStyle = chart.chart.config.options.breakpointColors.warning;
                 ctx.beginPath();
-                ctx.arc(width / 2, (height / 2) + height / 21.05, chart.chart.controller.outerRadius - lineWidth / 2, chart.chart.config.options.rotation + chart.chart.config.options.circumference * chart.chart.config.options.breakpoints.orange / 100, chart.chart.config.options.circumference * 0.10);
+                ctx.arc(width / 2, (height / 2) + height / 21.05, chart.chart.controller.outerRadius - lineWidth / 2, chart.chart.config.options.rotation + chart.chart.config.options.circumference * chart.chart.config.options.breakpoints.orange / max, chart.chart.config.options.circumference * 0.10);
                 ctx.stroke();
 
                 //red path
-                ctx.strokeStyle = "#FF0000";
+                ctx.strokeStyle = chart.chart.config.options.breakpointColors.danger;
                 ctx.beginPath();
-                ctx.arc(width / 2, (height / 2) + height / 21.05, chart.chart.controller.outerRadius - lineWidth / 2, chart.chart.config.options.rotation + chart.chart.config.options.circumference * chart.chart.config.options.breakpoints.red / 100, chart.chart.config.options.rotation + chart.chart.config.options.circumference);
+                ctx.arc(width / 2, (height / 2) + height / 21.05, chart.chart.controller.outerRadius - lineWidth / 2, chart.chart.config.options.rotation + chart.chart.config.options.circumference * chart.chart.config.options.breakpoints.red / max, chart.chart.config.options.rotation + chart.chart.config.options.circumference);
                 ctx.stroke();
-
 
                 let spaceWidth = chart.radiusLength / 6;
                 ctx.strokeStyle = "#000"; //red

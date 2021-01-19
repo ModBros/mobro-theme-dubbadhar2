@@ -5,7 +5,8 @@ const LoadingIndicator = mobro.hooks.getComponent("shared.loading-indicator");
 
 function DoughnutWidget(props) {
     const {
-        config
+        config,
+        layoutConfig
     } = props;
 
     const channelData = mobro.utils.component.useBasicChannelListener(config?.channel);
@@ -23,6 +24,12 @@ function DoughnutWidget(props) {
         100 :
         mobro.utils.channelData.extractValue(channelData, true, mobro.utils.channelData.extractRawMaxValue);
 
+    const widgetFontColor = config?.widgetFontColor || layoutConfig?.widgetFontColor;
+
+    const frontColor = !config?.frontColor ? 'rgba(0, 255, 255, 1)' : `rgba(${config.frontColor.r}, ${config.frontColor.g}, ${config.frontColor.b}, ${config.frontColor.a})`;
+    const backColor = !config?.backColor ? 'rgb(80,110,120)' : `rgba(${config.backColor.r}, ${config.backColor.g}, ${config.backColor.b}, ${config.backColor.a})`;
+    const labelColor = !widgetFontColor ? "#FFF" : `rgba(${widgetFontColor.r}, ${widgetFontColor.g}, ${widgetFontColor.b}, ${widgetFontColor.a})`;
+
     const data = (canvas) => {
         if (canvas.getAttribute("data-name") !== label) {
             canvas.setAttribute("data-name", label);
@@ -32,6 +39,10 @@ function DoughnutWidget(props) {
             canvas.setAttribute("data-unit", channelData.unit);
         }
 
+        if (canvas.getAttribute("data-label-color") !== labelColor) {
+            canvas.setAttribute("data-label-color", labelColor);
+        }
+
         return {
             datasets: [{
                 data: [
@@ -39,8 +50,8 @@ function DoughnutWidget(props) {
                     mobro.utils.channelData.extractValue(channelData) - max
                 ],
                 backgroundColor: [
-                    'rgba(0, 255, 255, 1)',
-                    'rgb(80,110,120)',
+                    frontColor,
+                    backColor,
                 ],
                 borderWidth: 0
             }]
@@ -52,4 +63,10 @@ function DoughnutWidget(props) {
     );
 }
 
-export default DoughnutWidget;
+const mapStateToProps = (state) => ({
+    layoutConfig: mobro.reducers.layout.getLayoutConfig(state)
+});
+
+export default mobro.lib.component.container.create("theme.widget.doughnut", DoughnutWidget)
+    .connect(mapStateToProps)
+    .generate();

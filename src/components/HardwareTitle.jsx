@@ -12,8 +12,6 @@ function HardwareTitle(props) {
         return (<AlignCenter><LoadingIndicator className={"small"}/></AlignCenter>);
     }
 
-    console.log(channelData);
-
     return (
         <span className={"w-100 d-flex align-items-center justify-content-center"}>
             {channelData?._hardware?.title}

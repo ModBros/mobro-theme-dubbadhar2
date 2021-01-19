@@ -45192,6 +45192,11 @@ function DoughnutWidget(props) {
   };
   var label = config !== null && config !== void 0 && config.label ? config.label : channelData.label;
   var max = mobro.utils.channelData.isPercentageData(channelData) ? 100 : mobro.utils.channelData.extractValue(channelData, true, mobro.utils.channelData.extractRawMaxValue);
+
+  if (config !== null && config !== void 0 && config.maxValue) {
+    max = config === null || config === void 0 ? void 0 : config.maxValue;
+  }
+
   var widgetFontColor = (config === null || config === void 0 ? void 0 : config.widgetFontColor) || (layoutConfig === null || layoutConfig === void 0 ? void 0 : layoutConfig.widgetFontColor);
   var frontColor = !(config !== null && config !== void 0 && config.frontColor) ? 'rgba(0, 255, 255, 1)' : "rgba(".concat(config.frontColor.r, ", ").concat(config.frontColor.g, ", ").concat(config.frontColor.b, ", ").concat(config.frontColor.a, ")");
   var backColor = !(config !== null && config !== void 0 && config.backColor) ? 'rgb(80,110,120)' : "rgba(".concat(config.backColor.r, ", ").concat(config.backColor.g, ", ").concat(config.backColor.b, ", ").concat(config.backColor.a, ")");
@@ -45979,6 +45984,9 @@ mobro__WEBPACK_IMPORTED_MODULE_2___default.a.hooks.addWidget({
     },
     channel: {
       type: "channel"
+    },
+    maxValue: {
+      type: "numeric"
     },
     colors: {
       type: "fieldset",

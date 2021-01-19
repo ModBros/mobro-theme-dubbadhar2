@@ -20,9 +20,13 @@ function DoughnutWidget(props) {
     }
 
     const label = config?.label ? config.label : channelData.label;
-    const max = mobro.utils.channelData.isPercentageData(channelData) ?
+    let max = mobro.utils.channelData.isPercentageData(channelData) ?
         100 :
         mobro.utils.channelData.extractValue(channelData, true, mobro.utils.channelData.extractRawMaxValue);
+
+    if (config?.maxValue) {
+        max = config?.maxValue;
+    }
 
     const widgetFontColor = config?.widgetFontColor || layoutConfig?.widgetFontColor;
 

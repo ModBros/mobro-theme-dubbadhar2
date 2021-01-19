@@ -313,6 +313,9 @@ mobro.hooks.addWidget({
         channel: {
             type: "channel"
         },
+        maxValue: {
+            type: "numeric"
+        },
         colors: {
             type: "fieldset",
             label: "Colors",

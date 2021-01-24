@@ -63,14 +63,16 @@ mobro.hooks.addGlobalEditModificator((config) => ({
                                 width: 6,
                                 children: {
                                     width: {
-                                        type: "numeric"
+                                        type: "numeric",
+                                        min: 0
                                     }
                                 }
                             }, {
                                 width: 6,
                                 children: {
                                     height: {
-                                        type: "numeric"
+                                        type: "numeric",
+                                        min: 0
                                     }
                                 }
                             }]

@@ -45739,14 +45739,16 @@ mobro__WEBPACK_IMPORTED_MODULE_2___default.a.hooks.addGlobalEditModificator(func
                   width: 6,
                   children: {
                     width: {
-                      type: "numeric"
+                      type: "numeric",
+                      min: 0
                     }
                   }
                 }, {
                   width: 6,
                   children: {
                     height: {
-                      type: "numeric"
+                      type: "numeric",
+                      min: 0
                     }
                   }
                 }]

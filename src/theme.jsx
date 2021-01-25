@@ -9,6 +9,7 @@ import Fraction from "theme/components/Fraction";
 import "theme/styles/theme.scss";
 import Gauge from "theme/components/Gauge";
 import DoughnutWidget from "theme/components/DoughnutWidget";
+import Draggable from "react-draggable";
 
 const BaseComponent = mobro.hooks.getComponent("widget.base-component");
 
@@ -107,45 +108,78 @@ mobro.hooks.addGlobalEditModificator((config) => ({
 
 mobro.hooks.redux.mapStateToProps("entry", (event) => {
     event.mergeMapStateToProps({
-        layoutConfig: mobro.reducers.layout.getLayoutConfig(event.getState())
+        layoutConfig: mobro.reducers.layout.getLayoutConfig(event.getState()),
+        layoutMode: mobro.reducers.layout.getLayoutMode(event.getState())
+    });
+});
+
+mobro.hooks.redux.mapDispatchToProps("entry", (event) => {
+    event.mergeMapDispatchToProps({
+        layoutEdit: ({path, name, data}) => event.dispatch(mobro.actions.layout.layoutEdit({path, name, data}))
     });
 });
 
 mobro.hooks.component("entry", () => (props) => {
     const {
         layout,
-        layoutConfig
+        layoutConfig,
+        layoutEdit,
+        layoutMode
     } = props;
 
     const style = {};
 
-    if(layoutConfig?.widgetFontSize) {
+    if (layoutConfig?.widgetFontSize) {
         style.fontSize = `${layoutConfig?.widgetFontSize}px`;
     }
 
     return (
         <div className={"position-relative w-100"} style={style}>
-            {mobro.utils.component.renderComponents(mobro.utils.component.getComponentsFromConfig(layout), "", ({Component, type, path, config, i}) => (
-                <div
-                    key={i.toString()}
-                    className={"position-absolute d-flex"}
-                    style={{
-                        width: (config?.width || 300) + "px",
-                        height: (config?.height || 100) + "px",
-                        left: (config?.coordinates?.x || 0) + "px",
-                        top: (config?.coordinates?.y || 0) + "px",
+            {mobro.utils.component.renderComponents(mobro.utils.component.getComponentsFromConfig(layout), "", ({Component, type, path, config, i}) => {
+                const componentStyle = {
+                    width: (config?.width || 300) + "px",
+                    height: (config?.height || 100) + "px",
+                    zIndex: i
+                }
 
-                        zIndex: i
-                    }}
-                >
-                    <BaseComponent
-                        type={type}
-                        path={path}
-                        config={config}
-                        Component={Component}
-                    />
-                </div>
-            ))}
+                if (!mobro.utils.layout.isEditMode(layoutMode)) {
+                    componentStyle.left = config?.coordinates?.x + "px";
+                    componentStyle.top = config?.coordinates?.y + "px";
+                }
+
+                let content = (
+                    <div
+                        key={i.toString()}
+                        className={"position-absolute d-flex"}
+                        style={componentStyle}
+                    >
+                        <BaseComponent
+                            type={type}
+                            path={path}
+                            config={config}
+                            Component={Component}
+                        />
+                    </div>
+                );
+
+                if (mobro.utils.layout.isEditMode(layoutMode)) {
+                    content = (
+                        <Draggable
+                            defaultPosition={{x: config?.coordinates?.x || 0, y: config?.coordinates?.y || 0}}
+                            onStop={(event, data) => {
+                                layoutEdit({path, name: "coordinates", data: {
+                                    x: data.x,
+                                    y: data.y
+                                }});
+                            }}
+                        >
+                            {content}
+                        </Draggable>
+                    );
+                }
+
+                return content;
+            })}
         </div>
     );
 });
@@ -177,7 +211,7 @@ mobro.hooks.component("widget.base-component", () => (props) => {
     let doSelectComponent = mobro.utils.helper.noop;
     let toggleEditSidebar = mobro.utils.helper.noop;
 
-    if(mobro.utils.layout.isEditMode(layoutMode)) {
+    if (mobro.utils.layout.isEditMode(layoutMode)) {
         defaultClasses = "clickable";
         doSelectComponent = () => selectComponent(path);
         toggleEditSidebar = mobro.utils.component.withEditSidebar({path, type, config});
@@ -189,23 +223,23 @@ mobro.hooks.component("widget.base-component", () => (props) => {
     const widgetFontColor = config?.widgetFontColor || layoutConfig?.widgetFontColor;
     const widgetPadding = config?.widgetPadding || layoutConfig?.widgetPadding;
 
-    if(widgetBackgroundColor) {
+    if (widgetBackgroundColor) {
         style.backgroundColor = `rgba(${widgetBackgroundColor?.r}, ${widgetBackgroundColor?.g}, ${widgetBackgroundColor?.b}, ${widgetBackgroundColor?.a})`
     }
 
-    if(widgetFontColor) {
+    if (widgetFontColor) {
         style.color = `rgba(${widgetFontColor?.r}, ${widgetFontColor?.g}, ${widgetFontColor?.b}, ${widgetFontColor?.a})`
     }
 
-    if(widgetFontSize) {
+    if (widgetFontSize) {
         style.fontSize = `${widgetFontSize}px`;
     }
 
-    if(layoutConfig?.disableWidgetBorder) {
+    if (layoutConfig?.disableWidgetBorder) {
         defaultClasses += " border-0";
     }
 
-    if(widgetPadding) {
+    if (widgetPadding) {
         style.padding = `${widgetPadding}px`;
     }
 

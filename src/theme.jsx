@@ -165,6 +165,7 @@ mobro.hooks.component("entry", () => (props) => {
                 if (mobro.utils.layout.isEditMode(layoutMode)) {
                     content = (
                         <Draggable
+                            key={i.toString()}
                             defaultPosition={{x: config?.coordinates?.x || 0, y: config?.coordinates?.y || 0}}
                             onStop={(event, data) => {
                                 layoutEdit({path, name: "coordinates", data: {
@@ -282,6 +283,32 @@ mobro.hooks.addWidget({
         },
         channel: {
             type: "channel"
+        },
+        limits: {
+            type: "fieldset",
+            label: "Limits",
+            collapsible: true,
+            collapsed: true,
+            children: {
+                minAndMax: {
+                    type: "field-container",
+                    children: [{
+                        width: 6,
+                        children: {
+                            min: {
+                                type: "numeric"
+                            }
+                        }
+                    }, {
+                        width: 6,
+                        children: {
+                            max: {
+                                type: "numeric"
+                            }
+                        }
+                    }]
+                }
+            }
         },
         lineColor: {
             type: "color"

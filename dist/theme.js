@@ -47424,7 +47424,15 @@ function LineChart(props) {
     }
   };
 
-  var data = function data() {
+  var data = function data(canvas) {
+    if (canvas.getAttribute("data-min") !== (config === null || config === void 0 ? void 0 : config.min)) {
+      canvas.setAttribute("data-min", config === null || config === void 0 ? void 0 : config.min);
+    }
+
+    if (canvas.getAttribute("data-max") !== (config === null || config === void 0 ? void 0 : config.max)) {
+      canvas.setAttribute("data-max", config === null || config === void 0 ? void 0 : config.max);
+    }
+
     return {
       labels: labels,
       datasets: [{
@@ -47720,6 +47728,7 @@ mobro__WEBPACK_IMPORTED_MODULE_2___default.a.hooks.component("entry", function (
         var _config$coordinates3, _config$coordinates4;
 
         content = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_draggable__WEBPACK_IMPORTED_MODULE_12___default.a, {
+          key: i.toString(),
           defaultPosition: {
             x: (config === null || config === void 0 ? void 0 : (_config$coordinates3 = config.coordinates) === null || _config$coordinates3 === void 0 ? void 0 : _config$coordinates3.x) || 0,
             y: (config === null || config === void 0 ? void 0 : (_config$coordinates4 = config.coordinates) === null || _config$coordinates4 === void 0 ? void 0 : _config$coordinates4.y) || 0
@@ -47842,6 +47851,32 @@ mobro__WEBPACK_IMPORTED_MODULE_2___default.a.hooks.addWidget({
     },
     channel: {
       type: "channel"
+    },
+    limits: {
+      type: "fieldset",
+      label: "Limits",
+      collapsible: true,
+      collapsed: true,
+      children: {
+        minAndMax: {
+          type: "field-container",
+          children: [{
+            width: 6,
+            children: {
+              min: {
+                type: "numeric"
+              }
+            }
+          }, {
+            width: 6,
+            children: {
+              max: {
+                type: "numeric"
+              }
+            }
+          }]
+        }
+      }
     },
     lineColor: {
       type: "color"
@@ -47977,6 +48012,17 @@ function configureChartJS() {
 
         var min = Math.min.apply(Math, _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_0___default()((_chart$config$data = chart.config.data) === null || _chart$config$data === void 0 ? void 0 : (_chart$config$data$da = _chart$config$data.datasets[0]) === null || _chart$config$data$da === void 0 ? void 0 : _chart$config$data$da.data));
         var max = Math.max.apply(Math, _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_0___default()((_chart$config$data2 = chart.config.data) === null || _chart$config$data2 === void 0 ? void 0 : (_chart$config$data2$d = _chart$config$data2.datasets[0]) === null || _chart$config$data2$d === void 0 ? void 0 : _chart$config$data2$d.data));
+
+        if (chart.canvas.getAttribute("data-min") && chart.canvas.getAttribute("data-min") !== "" && chart.canvas.getAttribute("data-min") !== null) {
+          min = chart.canvas.getAttribute("data-min");
+        }
+
+        if (chart.canvas.getAttribute("data-max") && chart.canvas.getAttribute("data-max") !== "" && chart.canvas.getAttribute("data-max") !== null) {
+          max = chart.canvas.getAttribute("data-max");
+        }
+
+        min = parseFloat(min);
+        max = parseFloat(max);
 
         if (max - min >= 1) {
           chart.config.options.scales.yAxes[0].ticks.stepSize = max;

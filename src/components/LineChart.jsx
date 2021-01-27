@@ -17,9 +17,9 @@ function LineChart(props) {
 
     mobro.utils.component.useChannelListener(config?.channel, (data) => {
         historyData.push(mobro.utils.channelData.extractValue(data));
-        labels.push(+ new Date());
+        labels.push(+new Date());
 
-        if(historyData.length > limit) {
+        if (historyData.length > limit) {
             historyData.shift();
             labels.shift();
         }
@@ -71,7 +71,15 @@ function LineChart(props) {
         }
     };
 
-    const data = () => {
+    const data = (canvas) => {
+        if (canvas.getAttribute("data-min") !== config?.min) {
+            canvas.setAttribute("data-min", config?.min);
+        }
+
+        if (canvas.getAttribute("data-max") !== config?.max) {
+            canvas.setAttribute("data-max", config?.max);
+        }
+
         return {
             labels: labels,
             datasets: [{
@@ -88,7 +96,8 @@ function LineChart(props) {
     return (
         <div className={"d-flex flex-column w-100"}>
             <div className={"w-100 d-flex align-items-center justify-content-between mb-2"}>
-                <span className="text-left d-block">{label} - <span>{mobro.utils.channelData.extractRawUnit(channelData)}</span></span>
+                <span
+                    className="text-left d-block">{label} - <span>{mobro.utils.channelData.extractRawUnit(channelData)}</span></span>
                 <h3 className="text-right">
                     {mobro.utils.channelData.extractValue(channelData)}
                 </h3>

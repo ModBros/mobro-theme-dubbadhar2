@@ -12,8 +12,27 @@ export function configureChartJS() {
                 type = chart.config.type;
 
             if (type == 'line') {
-                var min = Math.min(...chart.config.data?.datasets[0]?.data);
-                var max = Math.max(...chart.config.data?.datasets[0]?.data);
+                let min = Math.min(...chart.config.data?.datasets[0]?.data);
+                let max = Math.max(...chart.config.data?.datasets[0]?.data);
+
+                if(
+                    chart.canvas.getAttribute("data-min") &&
+                    chart.canvas.getAttribute("data-min") !== "" &&
+                    chart.canvas.getAttribute("data-min") !== null
+                ) {
+                    min = chart.canvas.getAttribute("data-min");
+                }
+
+                if(
+                    chart.canvas.getAttribute("data-max") &&
+                    chart.canvas.getAttribute("data-max") !== "" &&
+                    chart.canvas.getAttribute("data-max") !== null
+                ) {
+                    max = chart.canvas.getAttribute("data-max");
+                }
+
+                min = parseFloat(min);
+                max = parseFloat(max);
 
                 if (max - min >= 1) {
                     chart.config.options.scales.yAxes[0].ticks.stepSize = max;

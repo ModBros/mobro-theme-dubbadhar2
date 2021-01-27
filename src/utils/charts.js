@@ -18,7 +18,8 @@ export function configureChartJS() {
                 if(
                     chart.canvas.getAttribute("data-min") &&
                     chart.canvas.getAttribute("data-min") !== "" &&
-                    chart.canvas.getAttribute("data-min") !== null
+                    chart.canvas.getAttribute("data-min") != null &&
+                    chart.canvas.getAttribute("data-min") !== "undefined"
                 ) {
                     min = chart.canvas.getAttribute("data-min");
                 }
@@ -26,7 +27,8 @@ export function configureChartJS() {
                 if(
                     chart.canvas.getAttribute("data-max") &&
                     chart.canvas.getAttribute("data-max") !== "" &&
-                    chart.canvas.getAttribute("data-max") !== null
+                    chart.canvas.getAttribute("data-max") != null &&
+                    chart.canvas.getAttribute("data-max") !== "undefined"
                 ) {
                     max = chart.canvas.getAttribute("data-max");
                 }

@@ -48013,11 +48013,11 @@ function configureChartJS() {
         var min = Math.min.apply(Math, _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_0___default()((_chart$config$data = chart.config.data) === null || _chart$config$data === void 0 ? void 0 : (_chart$config$data$da = _chart$config$data.datasets[0]) === null || _chart$config$data$da === void 0 ? void 0 : _chart$config$data$da.data));
         var max = Math.max.apply(Math, _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_0___default()((_chart$config$data2 = chart.config.data) === null || _chart$config$data2 === void 0 ? void 0 : (_chart$config$data2$d = _chart$config$data2.datasets[0]) === null || _chart$config$data2$d === void 0 ? void 0 : _chart$config$data2$d.data));
 
-        if (chart.canvas.getAttribute("data-min") && chart.canvas.getAttribute("data-min") !== "" && chart.canvas.getAttribute("data-min") !== null) {
+        if (chart.canvas.getAttribute("data-min") && chart.canvas.getAttribute("data-min") !== "" && chart.canvas.getAttribute("data-min") != null && chart.canvas.getAttribute("data-min") !== "undefined") {
           min = chart.canvas.getAttribute("data-min");
         }
 
-        if (chart.canvas.getAttribute("data-max") && chart.canvas.getAttribute("data-max") !== "" && chart.canvas.getAttribute("data-max") !== null) {
+        if (chart.canvas.getAttribute("data-max") && chart.canvas.getAttribute("data-max") !== "" && chart.canvas.getAttribute("data-max") != null && chart.canvas.getAttribute("data-max") !== "undefined") {
           max = chart.canvas.getAttribute("data-max");
         }
 

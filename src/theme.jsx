@@ -3,8 +3,10 @@ import {configureChartJS} from "theme/utils/charts";
 
 // highcharts setup
 import more from "highcharts/highcharts-more";
+import solidGauge from "highcharts/modules/solid-gauge"
 import Highcharts from "highcharts";
 more(Highcharts);
+solidGauge(Highcharts);
 
 // styles
 import "theme/styles/theme.scss";

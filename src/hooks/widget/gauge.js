@@ -1,6 +1,6 @@
 import mobro from "mobro";
 import GaugeChartIcon from "theme/icons/chart_gauge.svg";
-import Gauge from "theme/components/Gauge";
+import Gauge from "theme/components/GaugeWidget.container";
 
 mobro.utils.icons.addIcon("widget.gauge", GaugeChartIcon);
 mobro.hooks.addWidget({

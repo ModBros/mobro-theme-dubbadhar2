@@ -17510,6 +17510,36 @@ f.stableSort=d.stableSort;f.syncTimeout=d.syncTimeout;f.timeUnits=d.timeUnits;f.
 
 /***/ }),
 
+/***/ "./node_modules/highcharts/modules/solid-gauge.js":
+/*!********************************************************!*\
+  !*** ./node_modules/highcharts/modules/solid-gauge.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
+ Highcharts JS v9.0.1 (2021-02-15)
+
+ Solid angular gauge module
+
+ (c) 2010-2021 Torstein Honsi
+
+ License: www.highcharts.com/license
+*/
+(function(a){ true&&module.exports?(a["default"]=a,module.exports=a): true?!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! highcharts */ "./node_modules/highcharts/highcharts.js"),__webpack_require__(/*! highcharts/highcharts-more */ "./node_modules/highcharts/highcharts-more.js")], __WEBPACK_AMD_DEFINE_RESULT__ = (function(l){a(l);a.Highcharts=l;return a}).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)):undefined})(function(a){function l(a,e,f,c){a.hasOwnProperty(e)||(a[e]=c.apply(null,f))}a=a?a._modules:{};l(a,"Core/Axis/SolidGaugeAxis.js",[a["Core/Color/Color.js"],a["Core/Utilities.js"]],function(a,e){var f=
+a.parse,c=e.extend,l=e.merge,b;(function(a){var b={initDataClasses:function(a){var c=this.chart,m,p=0,h=this.options;this.dataClasses=m=[];a.dataClasses.forEach(function(b,d){b=l(b);m.push(b);b.color||("category"===h.dataClassColor?(d=c.options.colors,b.color=d[p++],p===d.length&&(p=0)):b.color=f(h.minColor).tweenTo(f(h.maxColor),d/(a.dataClasses.length-1)))})},initStops:function(a){this.stops=a.stops||[[0,this.options.minColor],[1,this.options.maxColor]];this.stops.forEach(function(a){a.color=f(a[1])})},
+toColor:function(a,c){var b=this.stops,f=this.dataClasses,h;if(f)for(h=f.length;h--;){var e=f[h];var d=e.from;b=e.to;if(("undefined"===typeof d||a>=d)&&("undefined"===typeof b||a<=b)){var k=e.color;c&&(c.dataClass=h);break}}else{this.logarithmic&&(a=this.val2lin(a));a=1-(this.max-a)/(this.max-this.min);for(h=b.length;h--&&!(a>b[h][0]););d=b[h]||b[h+1];b=b[h+1]||d;a=1-(b[0]-a)/(b[0]-d[0]||1);k=d.color.tweenTo(b.color,a)}return k}};a.init=function(a){c(a,b)}})(b||(b={}));return b});l(a,"Series/SolidGauge/SolidGaugeComposition.js",
+[a["Core/Globals.js"],a["Core/Utilities.js"]],function(a,e){e=e.wrap;e(a.Renderer.prototype.symbols,"arc",function(a,c,e,b,l,k){a=a(c,e,b,l,k);k.rounded&&(b=((k.r||b)-(k.innerR||0))/2,c=a[0],k=a[2],"M"===c[0]&&"L"===k[0]&&(c=["A",b,b,0,1,1,c[1],c[2]],a[2]=["A",b,b,0,1,1,k[1],k[2]],a[4]=c));return a})});l(a,"Series/SolidGauge/SolidGaugeSeries.js",[a["Mixins/LegendSymbol.js"],a["Core/Series/SeriesRegistry.js"],a["Core/Axis/SolidGaugeAxis.js"],a["Core/Utilities.js"]],function(a,e,l,c){var f=this&&this.__extends||
+function(){var a=function(b,g){a=Object.setPrototypeOf||{__proto__:[]}instanceof Array&&function(a,b){a.__proto__=b}||function(a,b){for(var g in b)b.hasOwnProperty(g)&&(a[g]=b[g])};return a(b,g)};return function(b,g){function c(){this.constructor=b}a(b,g);b.prototype=null===g?Object.create(g):(c.prototype=g.prototype,new c)}}(),b=e.seriesTypes,n=b.gauge,k=b.pie.prototype,p=c.clamp,u=c.extend,m=c.isNumber,w=c.merge,h=c.pick,v=c.pInt,d={colorByPoint:!0,dataLabels:{y:0}};c=function(a){function b(){var b=
+null!==a&&a.apply(this,arguments)||this;b.data=void 0;b.points=void 0;b.options=void 0;b.axis=void 0;b.yAxis=void 0;b.startAngleRad=void 0;b.thresholdAngleRad=void 0;return b}f(b,a);b.prototype.translate=function(){var a=this.yAxis;l.init(a);!a.dataClasses&&a.options.dataClasses&&a.initDataClasses(a.options);a.initStops(a.options);n.prototype.translate.call(this)};b.prototype.drawPoints=function(){var a=this,b=a.yAxis,c=b.center,e=a.options,l=a.chart.renderer,d=e.overshoot,k=m(d)?d/180*Math.PI:0,
+f;m(e.threshold)&&(f=b.startAngleRad+b.translate(e.threshold,null,null,null,!0));this.thresholdAngleRad=h(f,b.startAngleRad);a.points.forEach(function(d){if(!d.isNull){var f=d.graphic,g=b.startAngleRad+b.translate(d.y,null,null,null,!0),m=v(h(d.options.radius,e.radius,100))*c[2]/200,q=v(h(d.options.innerRadius,e.innerRadius,60))*c[2]/200,r=b.toColor(d.y,d),t=Math.min(b.startAngleRad,b.endAngleRad),n=Math.max(b.startAngleRad,b.endAngleRad);"none"===r&&(r=d.color||a.color||"none");"none"!==r&&(d.color=
+r);g=p(g,t-k,n+k);!1===e.wrap&&(g=p(g,t,n));t=Math.min(g,a.thresholdAngleRad);g=Math.max(g,a.thresholdAngleRad);g-t>2*Math.PI&&(g=t+2*Math.PI);d.shapeArgs=q={x:c[0],y:c[1],r:m,innerR:q,start:t,end:g,rounded:e.rounded};d.startR=m;f?(m=q.d,f.animate(u({fill:r},q)),m&&(q.d=m)):d.graphic=f=l.arc(q).attr({fill:r,"sweep-flag":0}).add(a.group);a.chart.styledMode||("square"!==e.linecap&&f.attr({"stroke-linecap":"round","stroke-linejoin":"round"}),f.attr({stroke:e.borderColor||"none","stroke-width":e.borderWidth||
+0}));f&&f.addClass(d.getClassName(),!0)}})};b.prototype.animate=function(a){a||(this.startAngleRad=this.thresholdAngleRad,k.animate.call(this,a))};b.defaultOptions=w(n.defaultOptions,d);return b}(n);u(c.prototype,{drawLegendSymbol:a.drawRectangle});e.registerSeriesType("solidgauge",c);"";return c});l(a,"masters/modules/solid-gauge.src.js",[],function(){})});
+//# sourceMappingURL=solid-gauge.js.map
+
+/***/ }),
+
 /***/ "./node_modules/lodash/_DataView.js":
 /*!******************************************!*\
   !*** ./node_modules/lodash/_DataView.js ***!
@@ -48000,6 +48030,9 @@ function createOptions(config, layoutConfig, channelData) {
       events: {
         load: load(config, layoutConfig),
         redraw: redraw(config, layoutConfig, channelData)
+      },
+      animation: {
+        duration: 500
       }
     },
     title: {
@@ -48046,9 +48079,6 @@ function createOptions(config, layoutConfig, channelData) {
         // necessary so that the start animation won't cause weird re-renderings
         // due to unfinished animations
         animation: false
-      },
-      bar: {
-        groupPadding: 0
       },
       column: {
         // remove border from bar
@@ -48138,141 +48168,306 @@ function Fraction(props) {
 
 /***/ }),
 
-/***/ "./src/components/Gauge.jsx":
-/*!**********************************!*\
-  !*** ./src/components/Gauge.jsx ***!
-  \**********************************/
+/***/ "./src/components/GaugeWidget.container.js":
+/*!*************************************************!*\
+  !*** ./src/components/GaugeWidget.container.js ***!
+  \*************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react_chartjs_2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react-chartjs-2 */ "./node_modules/react-chartjs-2/es/index.js");
-/* harmony import */ var react_chartjs_2__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react_chartjs_2__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var theme_components_GaugeWidget__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! theme/components/GaugeWidget */ "./src/components/GaugeWidget.jsx");
 
-var AlignCenter = mobro.hooks.getComponent("shared.layout.align-center");
-var LoadingIndicator = mobro.hooks.getComponent("shared.loading-indicator");
-var defaultSettings = {
-  min: 0,
-  warning: 65,
-  critical: 80,
-  max: 100
-};
-
-function findMinMaxSettings(channelData, settings) {
-  var minMaxSettings = defaultSettings;
-
-  if (mobro["enum"].channelData.SENSOR_TYPE_TEMPERATURE !== channelData.sensortype) {
-    return minMaxSettings;
-  }
-
-  settings.hardware.temperature.forEach(function (item) {
-    var _channelData$_hardwar;
-
-    if (item.hardwaretype === (channelData === null || channelData === void 0 ? void 0 : (_channelData$_hardwar = channelData._hardware) === null || _channelData$_hardwar === void 0 ? void 0 : _channelData$_hardwar.hardwaretype)) {
-      minMaxSettings = item;
-    }
-  });
-  return minMaxSettings;
-}
-
-function Gauge(props) {
-  var config = props.config,
-      layoutConfig = props.layoutConfig,
-      _props$settings = props.settings,
-      settings = _props$settings === void 0 ? {} : _props$settings;
-  var channelData = mobro.utils.component.useBasicChannelListener(config === null || config === void 0 ? void 0 : config.channel);
-
-  if (!channelData) {
-    return /*#__PURE__*/React.createElement(AlignCenter, null, /*#__PURE__*/React.createElement(LoadingIndicator, {
-      className: "small"
-    }));
-  }
-
-  var minMaxSettings = findMinMaxSettings(channelData, settings);
-  var max = config.max || Math.max(mobro.utils.channelData.extractValue(channelData, true, mobro.utils.channelData.extractRawMaxValue), minMaxSettings.max, defaultSettings.max);
-  var options = {
-    responsive: true,
-    cutoutPercentage: 75,
-    circumference: 1.6 * Math.PI,
-    rotation: -(1.3 * Math.PI),
-    breakpoints: {
-      min: parseInt(minMaxSettings.min),
-      orange: parseInt(config.warning || minMaxSettings.warning),
-      red: parseInt(config.danger || minMaxSettings.critical),
-      max: parseInt(max)
-    }
-  };
-  var widgetFontColor = (config === null || config === void 0 ? void 0 : config.widgetFontColor) || (layoutConfig === null || layoutConfig === void 0 ? void 0 : layoutConfig.widgetFontColor);
-  var label = config !== null && config !== void 0 && config.label ? config.label : channelData.label;
-  var labelColor = !widgetFontColor ? "#FFF" : "rgba(".concat(widgetFontColor.r, ", ").concat(widgetFontColor.g, ", ").concat(widgetFontColor.b, ", ").concat(widgetFontColor.a, ")");
-  var baseColor = !(config !== null && config !== void 0 && config.baseColor) ? 'rgba(0, 255, 30, 1)' : "rgba(".concat(config.baseColor.r, ", ").concat(config.baseColor.g, ", ").concat(config.baseColor.b, ", ").concat(config.baseColor.a, ")");
-  var backColor = !(config !== null && config !== void 0 && config.backColor) ? 'rgb(80,110,120)' : "rgba(".concat(config.backColor.r, ", ").concat(config.backColor.g, ", ").concat(config.backColor.b, ", ").concat(config.backColor.a, ")");
-  var warningColor = !(config !== null && config !== void 0 && config.warningColor) ? 'rgba(255, 255, 30, 1)' : "rgba(".concat(config.warningColor.r, ", ").concat(config.warningColor.g, ", ").concat(config.warningColor.b, ", ").concat(config.warningColor.a, ")");
-  var dangerColor = !(config !== null && config !== void 0 && config.dangerColor) ? 'rgba(255, 0, 0, 1)' : "rgba(".concat(config.dangerColor.r, ", ").concat(config.dangerColor.g, ", ").concat(config.dangerColor.b, ", ").concat(config.dangerColor.a, ")");
-
-  var data = function data(canvas) {
-    if (canvas.getAttribute("data-name") !== label) {
-      canvas.setAttribute("data-name", label);
-    }
-
-    if (canvas.getAttribute("data-max") !== max) {
-      canvas.setAttribute("data-max", max);
-    }
-
-    if (canvas.getAttribute("data-unit") !== channelData.unit) {
-      canvas.setAttribute("data-unit", channelData.unit);
-    }
-
-    if (!canvas.getAttribute("data-border")) {
-      canvas.setAttribute("data-border", "margins");
-    }
-
-    if (canvas.getAttribute("data-label-color") !== labelColor) {
-      canvas.setAttribute("data-label-color", labelColor);
-    }
-
-    var value = mobro.utils.channelData.extractValue(channelData);
-    var frontColor = !(config !== null && config !== void 0 && config.baseColor) ? baseColor : "rgba(".concat(config.baseColor.r, ", ").concat(config.baseColor.g, ", ").concat(config.baseColor.b, ", ").concat(config.baseColor.a, ")");
-
-    if (value >= options.breakpoints.orange) {
-      frontColor = warningColor;
-    }
-
-    if (value > options.breakpoints.red) {
-      frontColor = dangerColor;
-    }
-
-    options.breakpointColors = {
-      base: baseColor,
-      warning: warningColor,
-      danger: dangerColor
-    };
-    return {
-      datasets: [{
-        data: [value, value - max],
-        backgroundColor: [frontColor, backColor],
-        borderWidth: 0
-      }]
-    };
-  };
-
-  return /*#__PURE__*/React.createElement(react_chartjs_2__WEBPACK_IMPORTED_MODULE_0__["Doughnut"], {
-    width: "100%",
-    height: "70%",
-    data: data,
-    options: options
-  });
-}
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    layoutConfig: mobro.reducers.layout.getLayoutConfig(state),
-    settings: mobro.reducers.settings.getSettings(state)
+    layoutConfig: mobro.reducers.layout.getLayoutConfig(state)
   };
 };
 
-/* harmony default export */ __webpack_exports__["default"] = (mobro.lib.component.container.create("theme.widget.doughnut", Gauge).connect(mapStateToProps).generate());
+/* harmony default export */ __webpack_exports__["default"] = (mobro.lib.component.container.create("theme.widget.doughnut", theme_components_GaugeWidget__WEBPACK_IMPORTED_MODULE_0__["default"]).connect(mapStateToProps).generate());
+
+/***/ }),
+
+/***/ "./src/components/GaugeWidget.jsx":
+/*!****************************************!*\
+  !*** ./src/components/GaugeWidget.jsx ***!
+  \****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/defineProperty.js");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "./node_modules/@babel/runtime/helpers/slicedToArray.js");
+/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var highcharts__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! highcharts */ "./node_modules/highcharts/highcharts.js");
+/* harmony import */ var highcharts__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(highcharts__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var highcharts_react_official__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! highcharts-react-official */ "./node_modules/highcharts-react-official/dist/highcharts-react.min.js");
+/* harmony import */ var highcharts_react_official__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(highcharts_react_official__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var theme_utils_color__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! theme/utils/color */ "./src/utils/color.js");
+
+
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+
+
+
+
+var AlignCenter = mobro.hooks.getComponent("shared.layout.align-center");
+var LoadingIndicator = mobro.hooks.getComponent("shared.loading-indicator");
+var defaultFrontColor = "rgb(0 255 255)";
+var defaultBackColor = "rgba(100, 100, 100, 0.5)";
+var defaultFontColor = "white";
+
+function basicTextFontColor(configRef, layoutConfigRef) {
+  return Object(theme_utils_color__WEBPACK_IMPORTED_MODULE_5__["colorToRgba"])(configRef.current.widgetFontColor, Object(theme_utils_color__WEBPACK_IMPORTED_MODULE_5__["colorToRgba"])(layoutConfigRef.current.widgetFontColor, defaultFontColor));
+}
+
+function frontColor(configRef) {
+  return Object(theme_utils_color__WEBPACK_IMPORTED_MODULE_5__["colorToRgba"])(configRef.current.frontColor, defaultFrontColor);
+}
+
+function backColor(configRef) {
+  return Object(theme_utils_color__WEBPACK_IMPORTED_MODULE_5__["colorToRgba"])(configRef.current.backColor, defaultBackColor);
+}
+
+function maxValue(configRef, channelData) {
+  if (configRef.current.maxValue) {
+    return parseInt(configRef.current.maxValue);
+  }
+
+  if (mobro.utils.channelData.isPercentageData(channelData.current)) {
+    return 100;
+  }
+
+  if (channelData.current) {
+    return mobro.utils.channelData.extractRawMaxValue(channelData.current);
+  }
+
+  return 100;
+}
+
+function load(configRef, layoutConfigRef) {
+  return function () {
+    this.widgetLabel = this.renderer.text("").attr({
+      align: "center",
+      zIndex: 1
+    }).css({
+      color: basicTextFontColor(configRef, layoutConfigRef)
+    }).add();
+    this.widgetValue = this.renderer.text("").attr({
+      align: "center",
+      zIndex: 2
+    }).css({
+      color: frontColor(configRef)
+    }).add();
+    this.widgetUnit = this.renderer.text("").attr({
+      align: "center",
+      zIndex: 1
+    }).css({
+      color: basicTextFontColor(configRef, layoutConfigRef)
+    }).add();
+  };
+}
+
+function redraw(configRef, layoutConfigRef, channelData) {
+  return function () {
+    var _configRef$current$la, _channelData$current;
+
+    if (!channelData.current) {
+      return;
+    }
+
+    var centerX = this.plotWidth / 2 + this.plotLeft;
+    var centerY = this.plotHeight / 2 + this.plotTop;
+    var valueFontSize = this.plotWidth / 6;
+    var labelFontSize = valueFontSize / 2.5;
+    this.widgetLabel.attr({
+      text: (_configRef$current$la = configRef.current.label) !== null && _configRef$current$la !== void 0 ? _configRef$current$la : (_channelData$current = channelData.current) === null || _channelData$current === void 0 ? void 0 : _channelData$current.label,
+      x: centerX,
+      y: centerY - this.plotHeight / 6
+    }).css({
+      color: basicTextFontColor(configRef, layoutConfigRef),
+      fontSize: "".concat(labelFontSize, "px")
+    });
+    this.widgetValue.attr({
+      text: mobro.utils.channelData.extractValue(channelData.current),
+      x: centerX,
+      y: centerY + valueFontSize / 3
+    }).css({
+      color: frontColor(configRef),
+      fontSize: "".concat(valueFontSize, "px")
+    });
+    this.widgetUnit.attr({
+      text: mobro.utils.channelData.extractRawUnit(channelData.current),
+      x: centerX,
+      y: centerY + valueFontSize / 3 + this.plotHeight / 6
+    }).css({
+      color: basicTextFontColor(configRef, layoutConfigRef),
+      fontSize: "".concat(labelFontSize, "px")
+    });
+  };
+}
+
+function createOptions(config, layoutConfig, channelData) {
+  return {
+    chart: {
+      type: 'solidgauge',
+      backgroundColor: "rgba(0, 0, 0, 0)",
+      margin: [0, 0, 0, 0],
+      spacing: [0, 0, 0, 0],
+      events: {
+        load: load(config, layoutConfig),
+        redraw: redraw(config, layoutConfig, channelData)
+      },
+      animation: {
+        duration: 500
+      }
+    },
+    title: {
+      text: ''
+    },
+    credits: {
+      enabled: false
+    },
+    exporting: {
+      enabled: false
+    },
+    subtitle: {
+      text: ""
+    },
+    pane: {
+      center: ["50%", "50%"],
+      size: "100%",
+      startAngle: -145,
+      endAngle: 145,
+      background: {
+        backgroundColor: backColor(config),
+        innerRadius: '70%',
+        outerRadius: '90%',
+        borderWidth: 0,
+        shape: 'arc'
+      }
+    },
+    tooltip: {
+      enabled: false
+    },
+    xAxis: {
+      max: maxValue(config, channelData),
+      visible: false
+    },
+    yAxis: {
+      stops: [[0.5, 'green'], // green
+      [0.6, 'yellow'], // yellow
+      [0.9, '#DF5353'] // red
+      ],
+      length: 5,
+      lineWidth: 0,
+      minorTickInterval: null,
+      tickAmount: 2,
+      tickLength: 0,
+      labels: {
+        enabled: false
+      },
+      min: 0,
+      max: 100,
+      plotBands: [{
+        thickness: 5,
+        from: 0,
+        to: 60,
+        color: 'green'
+      }, {
+        thickness: 5,
+        from: 60,
+        to: 80,
+        color: 'yellow'
+      }, {
+        thickness: 5,
+        from: 80,
+        to: 100,
+        color: 'red'
+      }]
+    },
+    plotOptions: {
+      solidgauge: {
+        innerRadius: "70%",
+        radius: "90%",
+        dataLabels: {
+          y: 5,
+          borderWidth: 0,
+          useHTML: true
+        },
+        series: {
+          animation: {
+            duration: 200
+          }
+        }
+      },
+      series: {
+        // necessary so that the start animation won't cause weird re-renderings
+        // due to unfinished animations
+        animation: false
+      },
+      column: {
+        // remove border from bar
+        borderWidth: 0
+      }
+    },
+    series: [{
+      data: [80]
+    }]
+  };
+}
+
+function GaugeWidget(props) {
+  var config = props.config,
+      layoutConfig = props.layoutConfig;
+  var channelData = Object(react__WEBPACK_IMPORTED_MODULE_2__["useRef"])(null);
+  var configRef = Object(react__WEBPACK_IMPORTED_MODULE_2__["useRef"])(config);
+  var layoutConfigRef = Object(react__WEBPACK_IMPORTED_MODULE_2__["useRef"])(config);
+
+  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_2__["useState"])(createOptions(configRef, layoutConfigRef, channelData)),
+      _useState2 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1___default()(_useState, 2),
+      options = _useState2[0],
+      setOptions = _useState2[1];
+
+  var optionsRef = Object(react__WEBPACK_IMPORTED_MODULE_2__["useRef"])(options);
+  Object(react__WEBPACK_IMPORTED_MODULE_2__["useEffect"])(function () {
+    configRef.current = config;
+    optionsRef.current.yAxis.max = maxValue(configRef, channelData);
+    optionsRef.current.pane.background.backgroundColor = backColor(configRef);
+    optionsRef.current.colors = [frontColor(configRef)];
+    setOptions(_objectSpread({}, optionsRef.current));
+  }, [config === null || config === void 0 ? void 0 : config.maxValue, config === null || config === void 0 ? void 0 : config.widgetFontColor, config === null || config === void 0 ? void 0 : config.frontColor, config === null || config === void 0 ? void 0 : config.backColor]);
+  Object(react__WEBPACK_IMPORTED_MODULE_2__["useEffect"])(function () {
+    layoutConfigRef.current = layoutConfig;
+  }, []);
+  mobro.utils.component.useChannelListener(config === null || config === void 0 ? void 0 : config.channel, function (data) {
+    channelData.current = data;
+    optionsRef.current.series[0].data = [parseFloat(mobro.utils.channelData.extractValue(data))];
+    setOptions(_objectSpread({}, optionsRef.current));
+  });
+  return /*#__PURE__*/React.createElement(highcharts_react_official__WEBPACK_IMPORTED_MODULE_4___default.a, {
+    highcharts: highcharts__WEBPACK_IMPORTED_MODULE_3___default.a,
+    options: options,
+    containerProps: {
+      style: {
+        width: "100%",
+        height: "100%"
+      }
+    }
+  });
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (GaugeWidget);
 
 /***/ }),
 
@@ -48893,7 +49088,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var mobro__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(mobro__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var theme_icons_chart_gauge_svg__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! theme/icons/chart_gauge.svg */ "./src/icons/chart_gauge.svg");
 /* harmony import */ var theme_icons_chart_gauge_svg__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(theme_icons_chart_gauge_svg__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var theme_components_Gauge__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! theme/components/Gauge */ "./src/components/Gauge.jsx");
+/* harmony import */ var theme_components_GaugeWidget_container__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! theme/components/GaugeWidget.container */ "./src/components/GaugeWidget.container.js");
 
 
 
@@ -48902,7 +49097,7 @@ mobro__WEBPACK_IMPORTED_MODULE_0___default.a.hooks.addWidget({
   name: "gauge",
   label: "Gauge",
   icon: "widget.gauge",
-  component: theme_components_Gauge__WEBPACK_IMPORTED_MODULE_2__["default"],
+  component: theme_components_GaugeWidget_container__WEBPACK_IMPORTED_MODULE_2__["default"],
   config: {
     label: {
       type: "input"
@@ -49123,20 +49318,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var theme_utils_charts__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! theme/utils/charts */ "./src/utils/charts.js");
 /* harmony import */ var highcharts_highcharts_more__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! highcharts/highcharts-more */ "./node_modules/highcharts/highcharts-more.js");
 /* harmony import */ var highcharts_highcharts_more__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(highcharts_highcharts_more__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var highcharts__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! highcharts */ "./node_modules/highcharts/highcharts.js");
-/* harmony import */ var highcharts__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(highcharts__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var theme_styles_theme_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! theme/styles/theme.scss */ "./src/styles/theme.scss");
-/* harmony import */ var theme_hooks_global_config__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! theme/hooks/global-config */ "./src/hooks/global-config.js");
-/* harmony import */ var theme_hooks_global_edit_modificator__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! theme/hooks/global-edit-modificator */ "./src/hooks/global-edit-modificator.js");
-/* harmony import */ var theme_hooks_component_entry__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! theme/hooks/component/entry */ "./src/hooks/component/entry.js");
-/* harmony import */ var theme_hooks_component_base_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! theme/hooks/component/base-component */ "./src/hooks/component/base-component.js");
-/* harmony import */ var theme_hooks_widgets__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! theme/hooks/widgets */ "./src/hooks/widgets.js");
+/* harmony import */ var highcharts_modules_solid_gauge__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! highcharts/modules/solid-gauge */ "./node_modules/highcharts/modules/solid-gauge.js");
+/* harmony import */ var highcharts_modules_solid_gauge__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(highcharts_modules_solid_gauge__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var highcharts__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! highcharts */ "./node_modules/highcharts/highcharts.js");
+/* harmony import */ var highcharts__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(highcharts__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var theme_styles_theme_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! theme/styles/theme.scss */ "./src/styles/theme.scss");
+/* harmony import */ var theme_hooks_global_config__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! theme/hooks/global-config */ "./src/hooks/global-config.js");
+/* harmony import */ var theme_hooks_global_edit_modificator__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! theme/hooks/global-edit-modificator */ "./src/hooks/global-edit-modificator.js");
+/* harmony import */ var theme_hooks_component_entry__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! theme/hooks/component/entry */ "./src/hooks/component/entry.js");
+/* harmony import */ var theme_hooks_component_base_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! theme/hooks/component/base-component */ "./src/hooks/component/base-component.js");
+/* harmony import */ var theme_hooks_widgets__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! theme/hooks/widgets */ "./src/hooks/widgets.js");
 
  // highcharts setup
 
 
 
-highcharts_highcharts_more__WEBPACK_IMPORTED_MODULE_2___default()(highcharts__WEBPACK_IMPORTED_MODULE_3___default.a); // styles
+
+highcharts_highcharts_more__WEBPACK_IMPORTED_MODULE_2___default()(highcharts__WEBPACK_IMPORTED_MODULE_4___default.a);
+highcharts_modules_solid_gauge__WEBPACK_IMPORTED_MODULE_3___default()(highcharts__WEBPACK_IMPORTED_MODULE_4___default.a); // styles
 
  // hooks
 

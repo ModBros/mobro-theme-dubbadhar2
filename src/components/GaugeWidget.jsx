@@ -23,15 +23,15 @@ function backColor(configRef) {
 }
 
 function maxValue(configRef, channelData) {
-    if(configRef.current.maxValue) {
+    if (configRef.current.maxValue) {
         return parseInt(configRef.current.maxValue)
     }
 
-    if(mobro.utils.channelData.isPercentageData(channelData.current)) {
+    if (mobro.utils.channelData.isPercentageData(channelData.current)) {
         return 100;
     }
 
-    if(channelData.current) {
+    if (channelData.current) {
         return mobro.utils.channelData.extractRawMaxValue(channelData.current)
     }
 
@@ -120,11 +120,8 @@ function redraw(configRef, layoutConfigRef, channelData) {
 
 function createOptions(config, layoutConfig, channelData) {
     return {
-        colors: [frontColor(config)],
         chart: {
-            type: "column",
-            inverted: true,
-            polar: true,
+            type: 'solidgauge',
             backgroundColor: "rgba(0, 0, 0, 0)",
             margin: [0, 0, 0, 0],
             spacing: [0, 0, 0, 0],
@@ -137,7 +134,7 @@ function createOptions(config, layoutConfig, channelData) {
             }
         },
         title: {
-            text: ""
+            text: ''
         },
         credits: {
             enabled: false
@@ -151,31 +148,60 @@ function createOptions(config, layoutConfig, channelData) {
         pane: {
             center: ["50%", "50%"],
             size: "100%",
+            startAngle: -145,
+            endAngle: 145,
             background: {
-                outerRadius: "100%",
-                innerRadius: "76%",
+                backgroundColor: backColor(config),
+                innerRadius: '70%',
+                outerRadius: '90%',
                 borderWidth: 0,
-                backgroundColor: backColor(config)
+                shape: 'arc'
             }
         },
-        legend: {
-            // no legend
-            enabled: false
-        },
         tooltip: {
-            // no tooltip on hover
             enabled: false
         },
         xAxis: {
-            // no borders, ticks what so ever
-            visible: false
+            max: maxValue(config, channelData),
+            visible: false,
         },
         yAxis: {
-            max: maxValue(config, channelData),
-            // no borders, ticks what so ever
-            visible: false
+            stops: [
+                [0.5, 'green'], // green
+                [0.6, 'yellow'], // yellow
+                [0.9, '#DF5353'] // red
+            ],
+            length: 5,
+            lineWidth: 0,
+            minorTickInterval: null,
+            tickAmount: 2,
+            tickLength: 0,
+            labels: {
+                enabled: false
+            },
+            min: 0,
+            max: 100,
+            plotBands: [
+                {thickness: 5, from: 0, to: 60, color: 'green'},
+                {thickness: 5, from: 60, to: 80, color: 'yellow'},
+                {thickness: 5, from: 80, to: 100, color: 'red'}
+            ]
         },
         plotOptions: {
+            solidgauge: {
+                innerRadius: "70%",
+                radius: "90%",
+                dataLabels: {
+                    y: 5,
+                    borderWidth: 0,
+                    useHTML: true
+                },
+                series: {
+                    animation: {
+                        duration: 200
+                    }
+                }
+            },
             series: {
                 // necessary so that the start animation won't cause weird re-renderings
                 // due to unfinished animations
@@ -186,13 +212,15 @@ function createOptions(config, layoutConfig, channelData) {
                 borderWidth: 0
             }
         },
-        series: [{
-            data: [0]
-        }]
+        series: [
+            {
+                data: [80]
+            }
+        ]
     }
 }
 
-function DoughnutWidget(props) {
+function GaugeWidget(props) {
     const {
         config,
         layoutConfig
@@ -233,4 +261,4 @@ function DoughnutWidget(props) {
     );
 }
 
-export default DoughnutWidget;
+export default GaugeWidget;

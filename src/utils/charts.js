@@ -1,3 +1,132 @@
+import {colorToRgba} from './color'
+
+export const defaultFontColor = 'white';
+export const defaultFrontColor = 'rgb(0 255 255)';
+export const defaultBackColor = 'rgba(100, 100, 100, 0.5)';
+
+export function basicTextColor(configRef, layoutConfigRef) {
+    return colorToRgba(configRef.current.widgetFontColor, colorToRgba(layoutConfigRef.current.widgetFontColor, defaultFontColor));
+}
+
+export function valueTextColor(configRef) {
+    return colorToRgba(configRef.current.frontColor, defaultFrontColor);
+}
+
+export function frontColor(configRef) {
+    return valueTextColor(configRef);
+}
+
+export function backColor(configRef) {
+    return colorToRgba(configRef.current.backColor, defaultBackColor);
+}
+
+export function maxValue(configRef, channelData, key = 'max') {
+    if (configRef.current[key]) {
+        return parseInt(configRef.current[key])
+    }
+
+    if (mobro.utils.channelData.isPercentageData(channelData.current)) {
+        return 100;
+    }
+
+    if (channelData.current) {
+        return mobro.utils.channelData.extractRawMaxValue(channelData.current)
+    }
+
+    return 100;
+}
+
+export function redrawDoughnutOrGauge(
+    configRef,
+    layoutConfigRef,
+    channelData,
+    basicTextFontColor = basicTextColor,
+    valueTextFontColor = valueTextColor
+) {
+    return function () {
+        if (!channelData.current) {
+            return;
+        }
+
+        const centerX = this.plotWidth / 2 + this.plotLeft;
+        const centerY = this.plotHeight / 2 + this.plotTop;
+        const valueFontSize = Math.min(this.plotWidth, this.plotHeight) / 5
+        const labelFontSize = valueFontSize / 2.5;
+
+        this.widgetLabel
+            .attr({
+                text: configRef.current.label ?? channelData.current?.label,
+                x: centerX,
+                y: centerY - (this.plotHeight / 6)
+            })
+            .css({
+                color: basicTextFontColor(configRef, layoutConfigRef),
+                fontSize: `${labelFontSize}px`
+            });
+
+        this.widgetValue
+            .attr({
+                text: mobro.utils.channelData.extractValue(channelData.current),
+                x: centerX,
+                y: centerY + (valueFontSize / 3)
+            })
+            .css({
+                color: valueTextFontColor(configRef),
+                fontSize: `${valueFontSize}px`
+            });
+
+        this.widgetUnit
+            .attr({
+                text: mobro.utils.channelData.extractRawUnit(channelData.current),
+                x: centerX,
+                y: centerY + (valueFontSize / 3) + (this.plotHeight / 6)
+            })
+            .css({
+                color: basicTextFontColor(configRef, layoutConfigRef),
+                fontSize: `${labelFontSize}px`
+            });
+    }
+}
+
+export function loadDoughnutOrGauge(
+    configRef,
+    layoutConfigRef,
+    basicTextFontColor = basicTextColor,
+    valueTextFontColor = valueTextColor
+) {
+    return function () {
+        this.widgetLabel = this.renderer.text('')
+            .attr({
+                align: 'center',
+                zIndex: 1
+            })
+            .css({
+                color: basicTextFontColor(configRef, layoutConfigRef)
+            })
+            .add()
+
+        this.widgetValue = this.renderer.text('')
+            .attr({
+                align: 'center',
+                zIndex: 2
+            })
+            .css({
+                color: valueTextFontColor(configRef)
+            })
+            .add();
+
+        this.widgetUnit = this.renderer.text('')
+            .attr({
+                align: 'center',
+                zIndex: 1
+            })
+            .css({
+                color: basicTextFontColor(configRef, layoutConfigRef)
+            })
+            .add()
+    }
+}
+
 export function configureChartJS() {
 
     Chart.defaults.global.legend.display = false;
@@ -15,22 +144,22 @@ export function configureChartJS() {
                 let min = Math.min(...chart.config.data?.datasets[0]?.data);
                 let max = Math.max(...chart.config.data?.datasets[0]?.data);
 
-                if(
-                    chart.canvas.getAttribute("data-min") &&
-                    chart.canvas.getAttribute("data-min") !== "" &&
-                    chart.canvas.getAttribute("data-min") != null &&
-                    chart.canvas.getAttribute("data-min") !== "undefined"
+                if (
+                    chart.canvas.getAttribute('data-min') &&
+                    chart.canvas.getAttribute('data-min') !== '' &&
+                    chart.canvas.getAttribute('data-min') != null &&
+                    chart.canvas.getAttribute('data-min') !== 'undefined'
                 ) {
-                    min = chart.canvas.getAttribute("data-min");
+                    min = chart.canvas.getAttribute('data-min');
                 }
 
-                if(
-                    chart.canvas.getAttribute("data-max") &&
-                    chart.canvas.getAttribute("data-max") !== "" &&
-                    chart.canvas.getAttribute("data-max") != null &&
-                    chart.canvas.getAttribute("data-max") !== "undefined"
+                if (
+                    chart.canvas.getAttribute('data-max') &&
+                    chart.canvas.getAttribute('data-max') !== '' &&
+                    chart.canvas.getAttribute('data-max') != null &&
+                    chart.canvas.getAttribute('data-max') !== 'undefined'
                 ) {
-                    max = chart.canvas.getAttribute("data-max");
+                    max = chart.canvas.getAttribute('data-max');
                 }
 
                 min = parseFloat(min);
@@ -52,15 +181,15 @@ export function configureChartJS() {
                 var fontSize = (height / 4).toFixed(2);
 
                 ctx.restore();
-                ctx.textBaseline = "middle"
+                ctx.textBaseline = 'middle'
 
                 let textX = Math.round(width / 2),
                     textY = (height + chart.chartArea.top) / 2;
 
-                ctx.font = fontSize / 3 + "px sans-serif";
-                ctx.fillStyle = chart.canvas.getAttribute("data-label-color") || "#FFF";
+                ctx.font = fontSize / 3 + 'px sans-serif';
+                ctx.fillStyle = chart.canvas.getAttribute('data-label-color') || '#FFF';
 
-                ctx.textAlign = "center";
+                ctx.textAlign = 'center';
 
                 let text_name = chart.canvas.getAttribute('data-name')
                 ctx.fillText(text_name, Math.round(width / 2), textY - height / 5)
@@ -68,9 +197,9 @@ export function configureChartJS() {
                 let text_unit = chart.canvas.getAttribute('data-unit')
                 ctx.fillText(text_unit, Math.round(width / 2), textY + height / 4)
 
-                ctx.font = fontSize + "px sans-serif";
+                ctx.font = fontSize + 'px sans-serif';
                 ctx.fillStyle = chart.config.data?.datasets?.[0]?.backgroundColor[0];
-                ctx.textAlign = "center";
+                ctx.textAlign = 'center';
                 ctx.fillText(chart.config.data?.datasets[0]?.data[0], textX, textY + height / 30);
                 ctx.fillStyle = oldFill;
 
@@ -87,7 +216,7 @@ export function configureChartJS() {
                 let lineWidth = chart.radiusLength / 4;
                 ctx.lineWidth = lineWidth;
 
-                const max = parseInt(chart.canvas.getAttribute("data-max")) || 100;
+                const max = parseInt(chart.canvas.getAttribute('data-max')) || 100;
 
                 //green path
                 ctx.strokeStyle = chart.chart.config.options.breakpointColors.base;
@@ -108,7 +237,7 @@ export function configureChartJS() {
                 ctx.stroke();
 
                 let spaceWidth = chart.radiusLength / 6;
-                ctx.strokeStyle = "#000"; //red
+                ctx.strokeStyle = '#000'; //red
                 ctx.lineWidth = 4
                 ctx.beginPath();
                 ctx.arc(width / 2, (height / 2) + height / 21.05, chart.chart.controller.outerRadius - lineWidth / 2 - spaceWidth / 1.5, chart.chart.config.options.rotation, chart.chart.config.options.rotation + chart.chart.config.options.circumference);

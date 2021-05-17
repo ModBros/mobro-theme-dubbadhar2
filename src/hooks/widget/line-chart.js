@@ -1,12 +1,12 @@
 import LineChartIcon from "theme/icons/chart_line.svg";
-import LineChart from "theme/components/LineChart";
+import LineChartWidget from "theme/components/LineChartWidget";
 
 mobro.utils.icons.addIcon("widget.line_chart", LineChartIcon);
 mobro.hooks.addWidget({
     name: "line-chart",
     label: "Line Chart",
     icon: "widget.line_chart",
-    component: LineChart,
+    component: LineChartWidget,
     config: {
         label: {
             type: "input",

@@ -1,5 +1,5 @@
 import mobro from "mobro";
-import DoughnutWidget from "theme/components/DoughnutWidget.container";
+import DoughnutWidget from "theme/components/DoughnutWidget";
 
 mobro.hooks.addWidget({
     name: "doughnut",

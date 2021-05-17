@@ -28,9 +28,9 @@ function findMinMaxSettings(channelData, settings) {
     return minMaxSettings;
 }
 
-function createOptions(config, layoutConfig, channelData, settings) {
-    const max = maxValue(config, channelData, "max");
-    const minMaxSettings = findMinMaxSettings(channelData.current, settings);
+function createOptions(configRef, layoutConfigRef, channelDataRef, settings) {
+    const max = maxValue(configRef, channelDataRef, "max");
+    const minMaxSettings = findMinMaxSettings(channelDataRef.current, settings);
 
     return {
         colors: [colorGreen],
@@ -40,10 +40,10 @@ function createOptions(config, layoutConfig, channelData, settings) {
             margin: [0, 0, 0, 0],
             spacing: [0, 0, 0, 0],
             events: {
-                load: loadDoughnutOrGauge(config, layoutConfig, basicTextColor, (configRef) => {
+                load: loadDoughnutOrGauge(configRef, layoutConfigRef, basicTextColor, () => {
                     return colorGreen;
                 }),
-                redraw: redrawDoughnutOrGauge(config, layoutConfig, channelData, basicTextColor, (configRef) => {
+                redraw: redrawDoughnutOrGauge(configRef, layoutConfigRef, channelDataRef, basicTextColor, () => {
                     return colorGreen;
                 })
             },
@@ -69,7 +69,7 @@ function createOptions(config, layoutConfig, channelData, settings) {
             startAngle: -145,
             endAngle: 145,
             background: {
-                backgroundColor: backColor(config),
+                backgroundColor: backColor(configRef),
                 innerRadius: '70%',
                 outerRadius: '90%',
                 borderWidth: 0,
@@ -95,9 +95,9 @@ function createOptions(config, layoutConfig, channelData, settings) {
             min: 0,
             max: 100,
             plotBands: [
-                {thickness: 5, from: 0, to: parseInt(config.current.warning || minMaxSettings.warning), color: colorToRgba(config.current.baseColor, colorGreen)},
-                {thickness: 5, from: parseInt(config.current.warning || minMaxSettings.warning), to: parseInt(config.current.danger || minMaxSettings.critical), color: colorToRgba(config.current.warningColor, colorYellow)},
-                {thickness: 5, from:  parseInt(config.current.danger || minMaxSettings.critical), to: parseInt(max), color: colorToRgba(config.current.dangerColor, colorRed)}
+                {thickness: 5, from: 0, to: parseInt(configRef.current.warning || minMaxSettings.warning), color: colorToRgba(configRef.current.baseColor, colorGreen)},
+                {thickness: 5, from: parseInt(configRef.current.warning || minMaxSettings.warning), to: parseInt(configRef.current.danger || minMaxSettings.critical), color: colorToRgba(configRef.current.warningColor, colorYellow)},
+                {thickness: 5, from:  parseInt(configRef.current.danger || minMaxSettings.critical), to: parseInt(max), color: colorToRgba(configRef.current.dangerColor, colorRed)}
             ]
         },
         plotOptions: {

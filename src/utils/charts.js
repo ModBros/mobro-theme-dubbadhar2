@@ -20,20 +20,28 @@ export function backColor(configRef) {
     return colorToRgba(configRef.current.backColor, defaultBackColor);
 }
 
-export function maxValue(configRef, channelData, key = 'max') {
-    if (configRef.current[key]) {
+export function maxValue(configRef, channelData, key = 'max', fallback = 100) {
+    if (key && configRef.current?.[key]) {
         return parseInt(configRef.current[key])
     }
 
-    if (mobro.utils.channelData.isPercentageData(channelData.current)) {
-        return 100;
-    }
+    if (channelData?.current) {
+        if (mobro.utils.channelData.isPercentageData(channelData.current)) {
+            return 100;
+        }
 
-    if (channelData.current) {
         return mobro.utils.channelData.extractRawMaxValue(channelData.current)
     }
 
-    return 100;
+    return fallback;
+}
+
+export function minValue(configRef, key = 'min', fallback) {
+    if (key && configRef.current?.[key]) {
+        return parseInt(configRef.current[key])
+    }
+
+    return fallback;
 }
 
 export function redrawDoughnutOrGauge(

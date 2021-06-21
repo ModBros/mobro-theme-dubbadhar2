@@ -69,7 +69,19 @@ function createOptions(configRef, layoutConfigRef, channelDataRef, settings, opt
                 enabled: false
             },
             enableMouseTracking: false,
-            data: optionsRef.current?.series?.[0]?.data ?? [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            data: optionsRef.current?.series?.[0]?.data ?? (function () {
+                const data = [];
+                const time = (new Date()).getTime();
+
+                for (let i = 0; i < 14; i++) {
+                    data.push({
+                        x: time - i * 1000,
+                        y: 0
+                    });
+                }
+
+                return data.reverse();
+            })()
         }]
     }
 }
@@ -123,8 +135,13 @@ function LineChartWidget(props) {
                     'lineColor'
                 ]}
                 writeDataToSeries={(channelDataRef, optionsRef, configRef, layoutConfigRef, chartRef) => {
-                    chartRef.current?.chart?.series?.[0]?.addPoint(parseFloat(mobro.utils.channelData.extractValue(channelDataRef.current)), false, true);
-                    chartRef.current?.chart?.redraw();
+                    const point = [
+                        (new Date()).getTime(),
+                        parseFloat(mobro.utils.channelData.extractValue(channelDataRef.current))
+                    ];
+
+                    chartRef.current?.chart?.series?.[0]?.addPoint(point, false, true);
+                    chartRef?.chart?.redraw();
                 }}
                 adaptOptions={() => {
                 }}

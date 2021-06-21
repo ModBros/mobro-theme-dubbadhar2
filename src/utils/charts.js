@@ -2,7 +2,7 @@ import {colorToRgba} from './color'
 
 export const defaultFontColor = 'white';
 export const defaultFrontColor = 'rgb(0 255 255)';
-export const defaultBackColor = 'rgba(100, 100, 100, 0.5)';
+export const defaultBackColor = '#506e78';
 
 export function basicTextColor(configRef, layoutConfigRef) {
     return colorToRgba(configRef.current.widgetFontColor, colorToRgba(layoutConfigRef.current.widgetFontColor, defaultFontColor));

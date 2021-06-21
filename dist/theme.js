@@ -5094,7 +5094,19 @@ function createOptions(configRef, layoutConfigRef, channelDataRef, settings, opt
         enabled: false
       },
       enableMouseTracking: false,
-      data: (_optionsRef$current$s = (_optionsRef$current = optionsRef.current) === null || _optionsRef$current === void 0 ? void 0 : (_optionsRef$current$s2 = _optionsRef$current.series) === null || _optionsRef$current$s2 === void 0 ? void 0 : (_optionsRef$current$s3 = _optionsRef$current$s2[0]) === null || _optionsRef$current$s3 === void 0 ? void 0 : _optionsRef$current$s3.data) !== null && _optionsRef$current$s !== void 0 ? _optionsRef$current$s : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      data: (_optionsRef$current$s = (_optionsRef$current = optionsRef.current) === null || _optionsRef$current === void 0 ? void 0 : (_optionsRef$current$s2 = _optionsRef$current.series) === null || _optionsRef$current$s2 === void 0 ? void 0 : (_optionsRef$current$s3 = _optionsRef$current$s2[0]) === null || _optionsRef$current$s3 === void 0 ? void 0 : _optionsRef$current$s3.data) !== null && _optionsRef$current$s !== void 0 ? _optionsRef$current$s : function () {
+        var data = [];
+        var time = new Date().getTime();
+
+        for (var i = 0; i < 14; i++) {
+          data.push({
+            x: time - i * 1000,
+            y: 0
+          });
+        }
+
+        return data.reverse();
+      }()
     }]
   };
 }
@@ -5131,10 +5143,11 @@ function LineChartWidget(props) {
     createOptions: createOptions,
     configKeyToListen: ['min', 'max', 'width', 'height', 'lineColor'],
     writeDataToSeries: function writeDataToSeries(channelDataRef, optionsRef, configRef, layoutConfigRef, chartRef) {
-      var _chartRef$current, _chartRef$current$cha, _chartRef$current$cha2, _chartRef$current$cha3, _chartRef$current2, _chartRef$current2$ch;
+      var _chartRef$current, _chartRef$current$cha, _chartRef$current$cha2, _chartRef$current$cha3, _chartRef$chart;
 
-      (_chartRef$current = chartRef.current) === null || _chartRef$current === void 0 ? void 0 : (_chartRef$current$cha = _chartRef$current.chart) === null || _chartRef$current$cha === void 0 ? void 0 : (_chartRef$current$cha2 = _chartRef$current$cha.series) === null || _chartRef$current$cha2 === void 0 ? void 0 : (_chartRef$current$cha3 = _chartRef$current$cha2[0]) === null || _chartRef$current$cha3 === void 0 ? void 0 : _chartRef$current$cha3.addPoint(parseFloat(mobro.utils.channelData.extractValue(channelDataRef.current)), false, true);
-      (_chartRef$current2 = chartRef.current) === null || _chartRef$current2 === void 0 ? void 0 : (_chartRef$current2$ch = _chartRef$current2.chart) === null || _chartRef$current2$ch === void 0 ? void 0 : _chartRef$current2$ch.redraw();
+      var point = [new Date().getTime(), parseFloat(mobro.utils.channelData.extractValue(channelDataRef.current))];
+      (_chartRef$current = chartRef.current) === null || _chartRef$current === void 0 ? void 0 : (_chartRef$current$cha = _chartRef$current.chart) === null || _chartRef$current$cha === void 0 ? void 0 : (_chartRef$current$cha2 = _chartRef$current$cha.series) === null || _chartRef$current$cha2 === void 0 ? void 0 : (_chartRef$current$cha3 = _chartRef$current$cha2[0]) === null || _chartRef$current$cha3 === void 0 ? void 0 : _chartRef$current$cha3.addPoint(point, false, true);
+      chartRef === null || chartRef === void 0 ? void 0 : (_chartRef$chart = chartRef.chart) === null || _chartRef$chart === void 0 ? void 0 : _chartRef$chart.redraw();
     },
     adaptOptions: function adaptOptions() {}
   })));
@@ -6016,7 +6029,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var defaultFontColor = 'white';
 var defaultFrontColor = 'rgb(0 255 255)';
-var defaultBackColor = 'rgba(100, 100, 100, 0.5)';
+var defaultBackColor = '#506e78';
 function basicTextColor(configRef, layoutConfigRef) {
   return Object(_color__WEBPACK_IMPORTED_MODULE_1__["colorToRgba"])(configRef.current.widgetFontColor, Object(_color__WEBPACK_IMPORTED_MODULE_1__["colorToRgba"])(layoutConfigRef.current.widgetFontColor, defaultFontColor));
 }

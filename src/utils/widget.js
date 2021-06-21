@@ -19,5 +19,5 @@ export function getWidgetPadding(widgetConfig, layoutConfig) {
 }
 
 export function getWidgetFontFamily(widgetConfig, layoutConfig) {
-    return getWidgetConfigValue('widgetFontFamily', widgetConfig, layoutConfig)?.family;
+    return getWidgetConfigValue('widgetFontFamily', widgetConfig, layoutConfig)?.family ?? "";
 }

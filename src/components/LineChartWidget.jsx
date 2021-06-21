@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import Chart from './charts/Chart.container';
-import {frontColor, maxValue, minValue} from '../utils/charts'
+import {maxValue, minValue} from '../utils/charts'
 import {colorToRgba} from '../utils/color'
 import {getWidgetFontFamily} from '../utils/widget'
 
@@ -14,8 +14,6 @@ function createOptions(configRef, layoutConfigRef, channelDataRef, settings, opt
         colors: [colorToRgba(configRef.current?.lineColor, defaultLineColor)],
         chart: {
             backgroundColor: 'rgba(0, 0, 0, 0)',
-            // margin: [0, 0, 0, 0],
-            // spacing: [0, 0, 0, 0],
             animation: {
                 duration: 500
             }

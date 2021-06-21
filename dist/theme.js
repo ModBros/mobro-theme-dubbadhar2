@@ -4646,6 +4646,110 @@ module.exports = function (list, options) {
 
 /***/ }),
 
+/***/ "./src/components/BarChartWidget.jsx":
+/*!*******************************************!*\
+  !*** ./src/components/BarChartWidget.jsx ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/extends */ "./node_modules/@babel/runtime/helpers/extends.js");
+/* harmony import */ var _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _charts_Chart_container__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./charts/Chart.container */ "./src/components/charts/Chart.container.js");
+/* harmony import */ var _utils_charts__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/charts */ "./src/utils/charts.js");
+
+
+
+
+function createOptions(configRef, layoutConfigRef, channelDataRef, settings, optionsRef) {
+  var max = Object(_utils_charts__WEBPACK_IMPORTED_MODULE_2__["maxValue"])(configRef, channelDataRef.current, 'max');
+  return {
+    colors: [Object(_utils_charts__WEBPACK_IMPORTED_MODULE_2__["backColor"])(configRef), Object(_utils_charts__WEBPACK_IMPORTED_MODULE_2__["frontColor"])(configRef)],
+    chart: {
+      type: 'bar',
+      backgroundColor: 'rgba(0, 0, 0, 0)',
+      animation: {
+        duration: 500
+      },
+      margin: [0, 0, 0, 0],
+      spacing: [0, 0, 0, 0]
+    },
+    title: {
+      text: undefined,
+      floating: true
+    },
+    credits: {
+      enabled: false
+    },
+    exporting: {
+      enabled: false
+    },
+    subtitle: {
+      text: ''
+    },
+    tooltip: {
+      enabled: false
+    },
+    legend: {
+      enabled: false
+    },
+    xAxis: {
+      visible: false
+    },
+    yAxis: {
+      visible: false
+    },
+    plotOptions: {
+      series: {
+        // necessary so that the start animation won't cause weird re-renderings
+        // due to unfinished animations
+        animation: false,
+        stacking: 'normal'
+      },
+      bar: {
+        // remove border from bar
+        borderWidth: 0
+      }
+    },
+    series: [{
+      marker: {
+        enabled: false
+      },
+      enableMouseTracking: false,
+      data: [max]
+    }, {
+      marker: {
+        enabled: false
+      },
+      enableMouseTracking: false,
+      data: [0]
+    }]
+  };
+}
+
+function BarChartWidget(props) {
+  var chartProps = _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({}, props);
+
+  return /*#__PURE__*/React.createElement(_charts_Chart_container__WEBPACK_IMPORTED_MODULE_1__["default"], _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({}, chartProps, {
+    createOptions: createOptions,
+    configKeyToListen: ['min', 'max', 'width', 'height', 'frontColor', 'backColor'],
+    writeDataToSeries: function writeDataToSeries(channelDataRef, optionsRef, configRef, layoutConfigRef, chartRef) {
+      optionsRef.current.series[0].data = [Math.max(0, optionsRef.current.yAxis.max - parseFloat(mobro.utils.channelData.extractValue(channelDataRef.current)))];
+      optionsRef.current.series[1].data = [parseFloat(mobro.utils.channelData.extractValue(channelDataRef.current))];
+    },
+    adaptOptions: function adaptOptions(channelDataRef, optionsRef, configRef) {
+      optionsRef.current.yAxis.min = Object(_utils_charts__WEBPACK_IMPORTED_MODULE_2__["minValue"])(configRef, 'min', null);
+      optionsRef.current.yAxis.max = Object(_utils_charts__WEBPACK_IMPORTED_MODULE_2__["maxValue"])(configRef, channelDataRef.current, 'max');
+    }
+  }));
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (BarChartWidget);
+
+/***/ }),
+
 /***/ "./src/components/DoughnutWidget.jsx":
 /*!*******************************************!*\
   !*** ./src/components/DoughnutWidget.jsx ***!
@@ -5040,8 +5144,6 @@ function createOptions(configRef, layoutConfigRef, channelDataRef, settings, opt
     colors: [Object(_utils_color__WEBPACK_IMPORTED_MODULE_5__["colorToRgba"])((_configRef$current = configRef.current) === null || _configRef$current === void 0 ? void 0 : _configRef$current.lineColor, defaultLineColor)],
     chart: {
       backgroundColor: 'rgba(0, 0, 0, 0)',
-      // margin: [0, 0, 0, 0],
-      // spacing: [0, 0, 0, 0],
       animation: {
         duration: 500
       }
@@ -5672,6 +5774,73 @@ mobro__WEBPACK_IMPORTED_MODULE_1___default.a.hooks.addGlobalEditModificator(func
 
 /***/ }),
 
+/***/ "./src/hooks/widget/bar-chart.js":
+/*!***************************************!*\
+  !*** ./src/hooks/widget/bar-chart.js ***!
+  \***************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var theme_icons_bar_chart_svg__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! theme/icons/bar_chart.svg */ "./src/icons/bar_chart.svg");
+/* harmony import */ var theme_icons_bar_chart_svg__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(theme_icons_bar_chart_svg__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _components_BarChartWidget__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/BarChartWidget */ "./src/components/BarChartWidget.jsx");
+
+
+mobro.utils.icons.addIcon('widget.bar_chart', theme_icons_bar_chart_svg__WEBPACK_IMPORTED_MODULE_0___default.a);
+mobro.hooks.addWidget({
+  name: 'bar-chart',
+  label: 'Bar Chart',
+  icon: 'widget.bar_chart',
+  component: _components_BarChartWidget__WEBPACK_IMPORTED_MODULE_1__["default"],
+  config: {
+    channel: {
+      type: 'channel'
+    },
+    limits: {
+      type: 'fieldset',
+      label: 'Limits',
+      collapsible: true,
+      collapsed: true,
+      children: {
+        minAndMax: {
+          type: 'field-container',
+          children: [{
+            width: 6,
+            children: {
+              min: {
+                type: 'numeric'
+              }
+            }
+          }, {
+            width: 6,
+            children: {
+              max: {
+                type: 'numeric'
+              }
+            }
+          }]
+        }
+      }
+    },
+    colors: {
+      type: "fieldset",
+      label: "Colors",
+      children: {
+        frontColor: {
+          type: "color"
+        },
+        backColor: {
+          type: "color"
+        }
+      }
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./src/hooks/widget/doughnut.js":
 /*!**************************************!*\
   !*** ./src/hooks/widget/doughnut.js ***!
@@ -5926,11 +6095,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var theme_hooks_widget_gauge__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! theme/hooks/widget/gauge */ "./src/hooks/widget/gauge.js");
 /* harmony import */ var theme_hooks_widget_hardware_title__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! theme/hooks/widget/hardware-title */ "./src/hooks/widget/hardware-title.js");
 /* harmony import */ var theme_hooks_widget_line_chart__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! theme/hooks/widget/line-chart */ "./src/hooks/widget/line-chart.js");
+/* harmony import */ var theme_hooks_widget_bar_chart__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! theme/hooks/widget/bar-chart */ "./src/hooks/widget/bar-chart.js");
 
 
 
 
 
+
+
+/***/ }),
+
+/***/ "./src/icons/bar_chart.svg":
+/*!*********************************!*\
+  !*** ./src/icons/bar_chart.svg ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<svg version=\"1.1\" id=\"Capa_1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\" viewBox=\"0 0 512 512\" style=\"enable-background:new 0 0 512 512;\" xml:space=\"preserve\"><g><g><path d=\"M117.547,234.667H10.88c-5.888,0-10.667,4.779-10.667,10.667v256C0.213,507.221,4.992,512,10.88,512h106.667 c5.888,0,10.667-4.779,10.667-10.667v-256C128.213,239.445,123.456,234.667,117.547,234.667z\"></path></g></g><g><g><path d=\"M309.12,0H202.453c-5.888,0-10.667,4.779-10.667,10.667v490.667c0,5.888,4.779,10.667,10.667,10.667H309.12 c5.888,0,10.667-4.779,10.667-10.667V10.667C319.787,4.779,315.008,0,309.12,0z\"></path></g></g><g><g><path d=\"M501.12,106.667H394.453c-5.888,0-10.667,4.779-10.667,10.667v384c0,5.888,4.779,10.667,10.667,10.667H501.12 c5.888,0,10.667-4.779,10.667-10.667v-384C511.787,111.445,507.008,106.667,501.12,106.667z\"></path></g></g></svg>"
 
 /***/ }),
 

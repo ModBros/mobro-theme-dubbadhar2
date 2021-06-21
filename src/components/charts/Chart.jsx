@@ -2,18 +2,21 @@ import {useEffect, useRef, useState} from 'react';
 import HighchartsReact from 'highcharts-react-official'
 import Highcharts from 'highcharts'
 
-const AlignCenter = mobro.hooks.getComponent("shared.layout.align-center");
-const LoadingIndicator = mobro.hooks.getComponent("shared.loading-indicator");
+const AlignCenter = mobro.hooks.getComponent('shared.layout.align-center');
+const LoadingIndicator = mobro.hooks.getComponent('shared.loading-indicator');
 
 function Chart(props) {
     const {
         config,
         layoutConfig,
         settings,
-        createOptions = () => {},
+        createOptions = () => {
+        },
         configKeyToListen = [],
-        writeDataToSeries = () => {},
-        adaptOptions = () => {}
+        writeDataToSeries = () => {
+        },
+        adaptOptions = () => {
+        }
     } = props;
 
     const channelData = useRef(null);
@@ -23,7 +26,7 @@ function Chart(props) {
     const optionsRef = useRef(options);
     const chartRef = useRef(null);
 
-    const dependencies = configKeyToListen.map(key => config?.[key]);
+    const dependencies = configKeyToListen.map(key => config?.[key]).concat(configKeyToListen.map(key => layoutConfig?.[key]));
 
     useEffect(() => {
         layoutConfigRef.current = layoutConfig;
@@ -57,7 +60,7 @@ function Chart(props) {
         setOptions({...optionsRef.current});
     });
 
-    if(!options) {
+    if (!options) {
         return (
             <AlignCenter><LoadingIndicator/></AlignCenter>
         );

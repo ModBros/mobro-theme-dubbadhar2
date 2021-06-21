@@ -1,4 +1,5 @@
 import {colorToRgba} from './color'
+import {getWidgetFontFamily} from './widget'
 
 export const defaultFontColor = 'white';
 export const defaultFrontColor = 'rgb(0 255 255)';
@@ -69,7 +70,8 @@ export function redrawDoughnutOrGauge(
             })
             .css({
                 color: basicTextFontColor(configRef, layoutConfigRef),
-                fontSize: `${labelFontSize}px`
+                fontSize: `${labelFontSize}px`,
+                fontFamily: getWidgetFontFamily(configRef.current, layoutConfigRef.current)
             });
 
         this.widgetValue
@@ -80,7 +82,8 @@ export function redrawDoughnutOrGauge(
             })
             .css({
                 color: valueTextFontColor(configRef),
-                fontSize: `${valueFontSize}px`
+                fontSize: `${valueFontSize}px`,
+                fontFamily: getWidgetFontFamily(configRef.current, layoutConfigRef.current)
             });
 
         this.widgetUnit
@@ -91,7 +94,8 @@ export function redrawDoughnutOrGauge(
             })
             .css({
                 color: basicTextFontColor(configRef, layoutConfigRef),
-                fontSize: `${labelFontSize}px`
+                fontSize: `${labelFontSize}px`,
+                fontFamily: getWidgetFontFamily(configRef.current, layoutConfigRef.current)
             });
     }
 }
@@ -109,7 +113,8 @@ export function loadDoughnutOrGauge(
                 zIndex: 1
             })
             .css({
-                color: basicTextFontColor(configRef, layoutConfigRef)
+                color: basicTextFontColor(configRef, layoutConfigRef),
+                fontFamily: getWidgetFontFamily(configRef.current, layoutConfigRef.current)
             })
             .add()
 
@@ -119,7 +124,8 @@ export function loadDoughnutOrGauge(
                 zIndex: 2
             })
             .css({
-                color: valueTextFontColor(configRef)
+                color: valueTextFontColor(configRef),
+                fontFamily: getWidgetFontFamily(configRef.current, layoutConfigRef.current)
             })
             .add();
 
@@ -129,7 +135,8 @@ export function loadDoughnutOrGauge(
                 zIndex: 1
             })
             .css({
-                color: basicTextFontColor(configRef, layoutConfigRef)
+                color: basicTextFontColor(configRef, layoutConfigRef),
+                fontFamily: getWidgetFontFamily(configRef.current, layoutConfigRef.current)
             })
             .add()
     }

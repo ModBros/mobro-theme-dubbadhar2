@@ -1,26 +1,26 @@
-import mobro from "mobro";
+import mobro from 'mobro';
 
 mobro.hooks.addGlobalEditModificator((config) => ({
     tabs: {
-        type: "tabs",
+        type: 'tabs',
         children: [{
-            label: "General",
+            label: 'General',
             children: {
                 positioning: {
-                    type: "fieldset",
-                    label: "Positioning",
+                    type: 'fieldset',
+                    label: 'Positioning',
                     children: {
                         coordinates: {
-                            type: "coordinates"
+                            type: 'coordinates'
                         },
 
                         widthAndHeight: {
-                            type: "field-container",
+                            type: 'field-container',
                             children: [{
                                 width: 6,
                                 children: {
                                     width: {
-                                        type: "numeric",
+                                        type: 'numeric',
                                         min: 0
                                     }
                                 }
@@ -28,7 +28,7 @@ mobro.hooks.addGlobalEditModificator((config) => ({
                                 width: 6,
                                 children: {
                                     height: {
-                                        type: "numeric",
+                                        type: 'numeric',
                                         min: 0
                                     }
                                 }
@@ -40,22 +40,26 @@ mobro.hooks.addGlobalEditModificator((config) => ({
                 ...config
             }
         }, {
-            label: "Styling",
+            label: 'Styling',
             children: {
-                widgetFontSize: {
-                    type: "numeric"
+                widgetPadding: {
+                    type: 'numeric'
                 },
 
-                widgetPadding: {
-                    type: "numeric"
+                widgetFontSize: {
+                    type: 'numeric'
+                },
+
+                widgetFontFamily: {
+                    type: 'font'
                 },
 
                 widgetFontColor: {
-                    type: "color"
+                    type: 'color'
                 },
 
                 widgetBackgroundColor: {
-                    type: "color"
+                    type: 'color'
                 }
             }
         }]

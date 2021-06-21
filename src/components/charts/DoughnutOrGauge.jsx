@@ -20,7 +20,8 @@ function DoughnutOrGauge(props) {
                 'backColor',
                 'baseColor',
                 'warningColor',
-                'dangerColor'
+                'dangerColor',
+                'widgetFontFamily'
             ]}
             writeDataToSeries={(channelDataRef, optionsRef) => {
                 optionsRef.current.series[0].data = [parseFloat(mobro.utils.channelData.extractValue(channelDataRef.current))];

@@ -2,6 +2,7 @@ import {useState} from 'react';
 import Chart from './charts/Chart.container';
 import {frontColor, maxValue, minValue} from '../utils/charts'
 import {colorToRgba} from '../utils/color'
+import {getWidgetFontFamily} from '../utils/widget'
 
 const defaultLineColor = 'rgba(15, 150, 200, 1)';
 
@@ -51,6 +52,11 @@ function createOptions(configRef, layoutConfigRef, channelDataRef, settings, opt
             max: max,
             title: {
                 text: undefined
+            },
+            labels: {
+                style: {
+                    fontFamily: getWidgetFontFamily(configRef.current, layoutConfigRef.current)
+                }
             }
         },
         plotOptions: {

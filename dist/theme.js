@@ -5021,6 +5021,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _charts_Chart_container__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./charts/Chart.container */ "./src/components/charts/Chart.container.js");
 /* harmony import */ var _utils_charts__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/charts */ "./src/utils/charts.js");
 /* harmony import */ var _utils_color__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/color */ "./src/utils/color.js");
+/* harmony import */ var _utils_widget__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utils/widget */ "./src/utils/widget.js");
+
 
 
 
@@ -5076,6 +5078,11 @@ function createOptions(configRef, layoutConfigRef, channelDataRef, settings, opt
       max: max,
       title: {
         text: undefined
+      },
+      labels: {
+        style: {
+          fontFamily: Object(_utils_widget__WEBPACK_IMPORTED_MODULE_6__["getWidgetFontFamily"])(configRef.current, layoutConfigRef.current)
+        }
       }
     },
     plotOptions: {
@@ -5209,8 +5216,8 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 
 
-var AlignCenter = mobro.hooks.getComponent("shared.layout.align-center");
-var LoadingIndicator = mobro.hooks.getComponent("shared.loading-indicator");
+var AlignCenter = mobro.hooks.getComponent('shared.layout.align-center');
+var LoadingIndicator = mobro.hooks.getComponent('shared.loading-indicator');
 
 function Chart(props) {
   var config = props.config,
@@ -5237,7 +5244,9 @@ function Chart(props) {
   var chartRef = Object(react__WEBPACK_IMPORTED_MODULE_2__["useRef"])(null);
   var dependencies = configKeyToListen.map(function (key) {
     return config === null || config === void 0 ? void 0 : config[key];
-  });
+  }).concat(configKeyToListen.map(function (key) {
+    return layoutConfig === null || layoutConfig === void 0 ? void 0 : layoutConfig[key];
+  }));
   Object(react__WEBPACK_IMPORTED_MODULE_2__["useEffect"])(function () {
     var _chartRef$current, _chartRef$current$cha;
 
@@ -5301,7 +5310,7 @@ function DoughnutOrGauge(props) {
       chartProps = _babel_runtime_helpers_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_1___default()(props, ["extractMaxValue"]);
 
   return /*#__PURE__*/React.createElement(_Chart_container__WEBPACK_IMPORTED_MODULE_3__["default"], _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({}, chartProps, {
-    configKeyToListen: ['label', 'maxValue', 'max', 'warning', 'danger', 'widgetFontColor', 'backColor', 'baseColor', 'warningColor', 'dangerColor'],
+    configKeyToListen: ['label', 'maxValue', 'max', 'warning', 'danger', 'widgetFontColor', 'backColor', 'baseColor', 'warningColor', 'dangerColor', 'widgetFontFamily'],
     writeDataToSeries: function writeDataToSeries(channelDataRef, optionsRef) {
       optionsRef.current.series[0].data = [parseFloat(mobro.utils.channelData.extractValue(channelDataRef.current))];
     },
@@ -5327,15 +5336,19 @@ function DoughnutOrGauge(props) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var mobro__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mobro */ "mobro");
 /* harmony import */ var mobro__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(mobro__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _utils_color__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../utils/color */ "./src/utils/color.js");
+/* harmony import */ var _utils_widget__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../utils/widget */ "./src/utils/widget.js");
+
+
  // map the layoutConfig prop from the redux store to the base component that surrounds every widget
 
-mobro__WEBPACK_IMPORTED_MODULE_0___default.a.hooks.redux.mapStateToProps("widget.base-component", function (event) {
+mobro__WEBPACK_IMPORTED_MODULE_0___default.a.hooks.redux.mapStateToProps('widget.base-component', function (event) {
   event.mergeMapStateToProps({
     layoutConfig: mobro__WEBPACK_IMPORTED_MODULE_0___default.a.reducers.layout.getLayoutConfig(event.getState())
   });
 }); // override the base component to add the background color and border option from the global config
 
-mobro__WEBPACK_IMPORTED_MODULE_0___default.a.hooks.component("widget.base-component", function () {
+mobro__WEBPACK_IMPORTED_MODULE_0___default.a.hooks.component('widget.base-component', function () {
   return function (props) {
     var type = props.type,
         path = props.path,
@@ -5347,13 +5360,13 @@ mobro__WEBPACK_IMPORTED_MODULE_0___default.a.hooks.component("widget.base-compon
         _props$selectComponen = props.selectComponent,
         selectComponent = _props$selectComponen === void 0 ? noop : _props$selectComponen;
     var renderConfig = mobro__WEBPACK_IMPORTED_MODULE_0___default.a.hooks.getWidgetRenderConfig(type);
-    var baseClassNames = !(renderConfig !== null && renderConfig !== void 0 && renderConfig.ignoreBaseClassNames) ? "component card" : "";
-    var defaultClasses = "";
+    var baseClassNames = !(renderConfig !== null && renderConfig !== void 0 && renderConfig.ignoreBaseClassNames) ? 'component card' : '';
+    var defaultClasses = '';
     var doSelectComponent = mobro__WEBPACK_IMPORTED_MODULE_0___default.a.utils.helper.noop;
     var toggleEditSidebar = mobro__WEBPACK_IMPORTED_MODULE_0___default.a.utils.helper.noop;
 
     if (mobro__WEBPACK_IMPORTED_MODULE_0___default.a.utils.layout.isEditMode(layoutMode)) {
-      defaultClasses = "clickable";
+      defaultClasses = 'clickable';
 
       doSelectComponent = function doSelectComponent() {
         return selectComponent(path);
@@ -5367,25 +5380,30 @@ mobro__WEBPACK_IMPORTED_MODULE_0___default.a.hooks.component("widget.base-compon
     }
 
     var style = {};
-    var widgetBackgroundColor = (config === null || config === void 0 ? void 0 : config.widgetBackgroundColor) || (layoutConfig === null || layoutConfig === void 0 ? void 0 : layoutConfig.widgetBackgroundColor);
-    var widgetFontSize = config === null || config === void 0 ? void 0 : config.widgetFontSize;
-    var widgetFontColor = (config === null || config === void 0 ? void 0 : config.widgetFontColor) || (layoutConfig === null || layoutConfig === void 0 ? void 0 : layoutConfig.widgetFontColor);
-    var widgetPadding = (config === null || config === void 0 ? void 0 : config.widgetPadding) || (layoutConfig === null || layoutConfig === void 0 ? void 0 : layoutConfig.widgetPadding);
+    var widgetBackgroundColor = Object(_utils_widget__WEBPACK_IMPORTED_MODULE_2__["getWidgetBackgroundColor"])(config, layoutConfig);
+    var widgetFontSize = Object(_utils_widget__WEBPACK_IMPORTED_MODULE_2__["getWidgetFontSize"])(config, layoutConfig);
+    var widgetFontColor = Object(_utils_widget__WEBPACK_IMPORTED_MODULE_2__["getWidgetFontColor"])(config, layoutConfig);
+    var widgetPadding = Object(_utils_widget__WEBPACK_IMPORTED_MODULE_2__["getWidgetPadding"])(config, layoutConfig);
+    var widgetFontFamily = Object(_utils_widget__WEBPACK_IMPORTED_MODULE_2__["getWidgetFontFamily"])(config, layoutConfig);
 
     if (widgetBackgroundColor) {
-      style.backgroundColor = "rgba(".concat(widgetBackgroundColor === null || widgetBackgroundColor === void 0 ? void 0 : widgetBackgroundColor.r, ", ").concat(widgetBackgroundColor === null || widgetBackgroundColor === void 0 ? void 0 : widgetBackgroundColor.g, ", ").concat(widgetBackgroundColor === null || widgetBackgroundColor === void 0 ? void 0 : widgetBackgroundColor.b, ", ").concat(widgetBackgroundColor === null || widgetBackgroundColor === void 0 ? void 0 : widgetBackgroundColor.a, ")");
+      style.backgroundColor = Object(_utils_color__WEBPACK_IMPORTED_MODULE_1__["colorToRgba"])(widgetBackgroundColor);
     }
 
     if (widgetFontColor) {
-      style.color = "rgba(".concat(widgetFontColor === null || widgetFontColor === void 0 ? void 0 : widgetFontColor.r, ", ").concat(widgetFontColor === null || widgetFontColor === void 0 ? void 0 : widgetFontColor.g, ", ").concat(widgetFontColor === null || widgetFontColor === void 0 ? void 0 : widgetFontColor.b, ", ").concat(widgetFontColor === null || widgetFontColor === void 0 ? void 0 : widgetFontColor.a, ")");
+      style.color = Object(_utils_color__WEBPACK_IMPORTED_MODULE_1__["colorToRgba"])(widgetFontColor);
     }
 
     if (widgetFontSize) {
       style.fontSize = "".concat(widgetFontSize, "px");
     }
 
+    if (widgetFontFamily) {
+      style.fontFamily = widgetFontFamily;
+    }
+
     if (layoutConfig !== null && layoutConfig !== void 0 && layoutConfig.disableWidgetBorder) {
-      defaultClasses += " border-0";
+      defaultClasses += ' border-0';
     }
 
     if (widgetPadding) {
@@ -5393,7 +5411,7 @@ mobro__WEBPACK_IMPORTED_MODULE_0___default.a.hooks.component("widget.base-compon
     }
 
     return /*#__PURE__*/React.createElement("div", {
-      className: "".concat(defaultClasses, " ").concat(baseClassNames, " ").concat(renderConfig === null || renderConfig === void 0 ? void 0 : renderConfig.baseClassNames, " ").concat(selectedComponent === path ? "selection-indicator" : ""),
+      className: "".concat(defaultClasses, " ").concat(baseClassNames, " ").concat(renderConfig === null || renderConfig === void 0 ? void 0 : renderConfig.baseClassNames, " ").concat(selectedComponent === path ? 'selection-indicator' : ''),
       onClick: doSelectComponent,
       onDoubleClick: toggleEditSidebar,
       style: style
@@ -5545,11 +5563,14 @@ mobro__WEBPACK_IMPORTED_MODULE_0___default.a.hooks.globalConfig(function (event)
       }, {
         label: "Widgets",
         children: {
+          widgetPadding: {
+            type: "numeric"
+          },
           widgetFontSize: {
             type: "numeric"
           },
-          widgetPadding: {
-            type: "numeric"
+          widgetFontFamily: {
+            type: "font"
           },
           widgetFontColor: {
             type: "color"
@@ -5591,24 +5612,24 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 mobro__WEBPACK_IMPORTED_MODULE_1___default.a.hooks.addGlobalEditModificator(function (config) {
   return {
     tabs: {
-      type: "tabs",
+      type: 'tabs',
       children: [{
-        label: "General",
+        label: 'General',
         children: _objectSpread({
           positioning: {
-            type: "fieldset",
-            label: "Positioning",
+            type: 'fieldset',
+            label: 'Positioning',
             children: {
               coordinates: {
-                type: "coordinates"
+                type: 'coordinates'
               },
               widthAndHeight: {
-                type: "field-container",
+                type: 'field-container',
                 children: [{
                   width: 6,
                   children: {
                     width: {
-                      type: "numeric",
+                      type: 'numeric',
                       min: 0
                     }
                   }
@@ -5616,7 +5637,7 @@ mobro__WEBPACK_IMPORTED_MODULE_1___default.a.hooks.addGlobalEditModificator(func
                   width: 6,
                   children: {
                     height: {
-                      type: "numeric",
+                      type: 'numeric',
                       min: 0
                     }
                   }
@@ -5626,19 +5647,22 @@ mobro__WEBPACK_IMPORTED_MODULE_1___default.a.hooks.addGlobalEditModificator(func
           }
         }, config)
       }, {
-        label: "Styling",
+        label: 'Styling',
         children: {
-          widgetFontSize: {
-            type: "numeric"
-          },
           widgetPadding: {
-            type: "numeric"
+            type: 'numeric'
+          },
+          widgetFontSize: {
+            type: 'numeric'
+          },
+          widgetFontFamily: {
+            type: 'font'
           },
           widgetFontColor: {
-            type: "color"
+            type: 'color'
           },
           widgetBackgroundColor: {
-            type: "color"
+            type: 'color'
           }
         }
       }]
@@ -6025,6 +6049,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/toConsumableArray */ "./node_modules/@babel/runtime/helpers/toConsumableArray.js");
 /* harmony import */ var _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _color__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./color */ "./src/utils/color.js");
+/* harmony import */ var _widget__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./widget */ "./src/utils/widget.js");
+
 
 
 var defaultFontColor = 'white';
@@ -6094,7 +6120,8 @@ function redrawDoughnutOrGauge(configRef, layoutConfigRef, channelData) {
       y: centerY - this.plotHeight / 6
     }).css({
       color: basicTextFontColor(configRef, layoutConfigRef),
-      fontSize: "".concat(labelFontSize, "px")
+      fontSize: "".concat(labelFontSize, "px"),
+      fontFamily: Object(_widget__WEBPACK_IMPORTED_MODULE_2__["getWidgetFontFamily"])(configRef.current, layoutConfigRef.current)
     });
     this.widgetValue.attr({
       text: mobro.utils.channelData.extractValue(channelData.current),
@@ -6102,7 +6129,8 @@ function redrawDoughnutOrGauge(configRef, layoutConfigRef, channelData) {
       y: centerY + valueFontSize / 3
     }).css({
       color: valueTextFontColor(configRef),
-      fontSize: "".concat(valueFontSize, "px")
+      fontSize: "".concat(valueFontSize, "px"),
+      fontFamily: Object(_widget__WEBPACK_IMPORTED_MODULE_2__["getWidgetFontFamily"])(configRef.current, layoutConfigRef.current)
     });
     this.widgetUnit.attr({
       text: mobro.utils.channelData.extractRawUnit(channelData.current),
@@ -6110,7 +6138,8 @@ function redrawDoughnutOrGauge(configRef, layoutConfigRef, channelData) {
       y: centerY + valueFontSize / 3 + this.plotHeight / 6
     }).css({
       color: basicTextFontColor(configRef, layoutConfigRef),
-      fontSize: "".concat(labelFontSize, "px")
+      fontSize: "".concat(labelFontSize, "px"),
+      fontFamily: Object(_widget__WEBPACK_IMPORTED_MODULE_2__["getWidgetFontFamily"])(configRef.current, layoutConfigRef.current)
     });
   };
 }
@@ -6122,19 +6151,22 @@ function loadDoughnutOrGauge(configRef, layoutConfigRef) {
       align: 'center',
       zIndex: 1
     }).css({
-      color: basicTextFontColor(configRef, layoutConfigRef)
+      color: basicTextFontColor(configRef, layoutConfigRef),
+      fontFamily: Object(_widget__WEBPACK_IMPORTED_MODULE_2__["getWidgetFontFamily"])(configRef.current, layoutConfigRef.current)
     }).add();
     this.widgetValue = this.renderer.text('').attr({
       align: 'center',
       zIndex: 2
     }).css({
-      color: valueTextFontColor(configRef)
+      color: valueTextFontColor(configRef),
+      fontFamily: Object(_widget__WEBPACK_IMPORTED_MODULE_2__["getWidgetFontFamily"])(configRef.current, layoutConfigRef.current)
     }).add();
     this.widgetUnit = this.renderer.text('').attr({
       align: 'center',
       zIndex: 1
     }).css({
-      color: basicTextFontColor(configRef, layoutConfigRef)
+      color: basicTextFontColor(configRef, layoutConfigRef),
+      fontFamily: Object(_widget__WEBPACK_IMPORTED_MODULE_2__["getWidgetFontFamily"])(configRef.current, layoutConfigRef.current)
     }).add();
   };
 }
@@ -6259,6 +6291,46 @@ function colorToRgba(color) {
   }
 
   return "rgba(".concat(color === null || color === void 0 ? void 0 : color.r, ", ").concat(color === null || color === void 0 ? void 0 : color.g, ", ").concat(color === null || color === void 0 ? void 0 : color.b, ", ").concat(color === null || color === void 0 ? void 0 : color.a, ")");
+}
+
+/***/ }),
+
+/***/ "./src/utils/widget.js":
+/*!*****************************!*\
+  !*** ./src/utils/widget.js ***!
+  \*****************************/
+/*! exports provided: getWidgetConfigValue, getWidgetBackgroundColor, getWidgetFontSize, getWidgetFontColor, getWidgetPadding, getWidgetFontFamily */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getWidgetConfigValue", function() { return getWidgetConfigValue; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getWidgetBackgroundColor", function() { return getWidgetBackgroundColor; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getWidgetFontSize", function() { return getWidgetFontSize; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getWidgetFontColor", function() { return getWidgetFontColor; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getWidgetPadding", function() { return getWidgetPadding; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getWidgetFontFamily", function() { return getWidgetFontFamily; });
+function getWidgetConfigValue(key, widgetConfig, layoutConfig) {
+  var _widgetConfig$key;
+
+  return (_widgetConfig$key = widgetConfig === null || widgetConfig === void 0 ? void 0 : widgetConfig[key]) !== null && _widgetConfig$key !== void 0 ? _widgetConfig$key : layoutConfig === null || layoutConfig === void 0 ? void 0 : layoutConfig[key];
+}
+function getWidgetBackgroundColor(widgetConfig, layoutConfig) {
+  return getWidgetConfigValue('widgetBackgroundColor', widgetConfig, layoutConfig);
+}
+function getWidgetFontSize(widgetConfig, layoutConfig) {
+  return getWidgetConfigValue('widgetFontSize', widgetConfig, layoutConfig);
+}
+function getWidgetFontColor(widgetConfig, layoutConfig) {
+  return getWidgetConfigValue('widgetFontColor', widgetConfig, layoutConfig);
+}
+function getWidgetPadding(widgetConfig, layoutConfig) {
+  return getWidgetConfigValue('widgetPadding', widgetConfig, layoutConfig);
+}
+function getWidgetFontFamily(widgetConfig, layoutConfig) {
+  var _getWidgetConfigValue;
+
+  return (_getWidgetConfigValue = getWidgetConfigValue('widgetFontFamily', widgetConfig, layoutConfig)) === null || _getWidgetConfigValue === void 0 ? void 0 : _getWidgetConfigValue.family;
 }
 
 /***/ }),

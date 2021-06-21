@@ -10,18 +10,26 @@ mobro.hooks.globalConfig((event) => {
             }, {
                 label: "Widgets",
                 children: {
-                    widgetFontSize: {
-                        type: "numeric"
-                    },
                     widgetPadding: {
                         type: "numeric"
                     },
+
+                    widgetFontSize: {
+                        type: "numeric"
+                    },
+
+                    widgetFontFamily: {
+                        type: "font"
+                    },
+
                     widgetFontColor: {
                         type: "color"
                     },
+
                     widgetBackgroundColor: {
                         type: "color"
                     },
+
                     disableWidgetBorder: {
                         type: "checkbox"
                     }

@@ -4,6 +4,7 @@ import Chart from './Chart.container'
 function DoughnutOrGauge(props) {
     const {
         extractMaxValue = maxValue,
+        writeDataToSeries = (channelDataRef, optionsRef, configRef) => {},
         ...chartProps
     } = props;
 
@@ -23,8 +24,10 @@ function DoughnutOrGauge(props) {
                 'dangerColor',
                 'widgetFontFamily'
             ]}
-            writeDataToSeries={(channelDataRef, optionsRef) => {
+            writeDataToSeries={(channelDataRef, optionsRef, configRef) => {
                 optionsRef.current.series[0].data = [parseFloat(mobro.utils.channelData.extractValue(channelDataRef.current))];
+
+                writeDataToSeries(channelDataRef, optionsRef, configRef);
             }}
             adaptOptions={(channelDataRef, optionsRef, configRef) => {
                 optionsRef.current.yAxis.max = extractMaxValue(configRef, channelDataRef);

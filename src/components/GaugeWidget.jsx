@@ -19,7 +19,7 @@ function findMinMaxSettings(channelData, settings) {
         return minMaxSettings;
     }
 
-    settings.hardware.temperature.forEach((item) => {
+    settings?.hardware?.temperature?.forEach((item) => {
         if (item.hardwaretype === channelData?._hardware?.hardwaretype) {
             minMaxSettings = item;
         }
@@ -28,8 +28,30 @@ function findMinMaxSettings(channelData, settings) {
     return minMaxSettings;
 }
 
+function getColorForCurrentValue(channelDataRef, configRef, settings) {
+    const value = parseFloat(mobro.utils.channelData.extractValue(channelDataRef.current));
+    const minMaxSettings = findMinMaxSettings(channelDataRef.current, settings);
+
+    let color = colorToRgba(configRef.current.baseColor, colorGreen);
+
+    if (!value) {
+        return color
+    }
+
+    const warning = parseInt(configRef.current.warning || minMaxSettings.warning);
+    const danger = parseInt(configRef.current.danger || minMaxSettings.critical);
+
+    if (value >= danger) {
+        color = colorToRgba(configRef.current.dangerColor, colorRed);
+    } else if (value >= warning) {
+        color = colorToRgba(configRef.current.warningColor, colorYellow);
+    }
+
+    return color;
+}
+
 function createOptions(configRef, layoutConfigRef, channelDataRef, settings) {
-    const max = maxValue(configRef, channelDataRef, "max");
+    const max = maxValue(configRef, channelDataRef, 'max');
     const minMaxSettings = findMinMaxSettings(channelDataRef.current, settings);
 
     return {
@@ -41,10 +63,10 @@ function createOptions(configRef, layoutConfigRef, channelDataRef, settings) {
             spacing: [0, 0, 0, 0],
             events: {
                 load: loadDoughnutOrGauge(configRef, layoutConfigRef, basicTextColor, () => {
-                    return colorGreen;
+                    return getColorForCurrentValue(channelDataRef, configRef, settings);
                 }),
                 redraw: redrawDoughnutOrGauge(configRef, layoutConfigRef, channelDataRef, basicTextColor, () => {
-                    return colorGreen;
+                    return getColorForCurrentValue(channelDataRef, configRef, settings);
                 })
             },
             animation: {
@@ -95,9 +117,24 @@ function createOptions(configRef, layoutConfigRef, channelDataRef, settings) {
             min: 0,
             max: 100,
             plotBands: [
-                {thickness: 5, from: 0, to: parseInt(configRef.current.warning || minMaxSettings.warning), color: colorToRgba(configRef.current.baseColor, colorGreen)},
-                {thickness: 5, from: parseInt(configRef.current.warning || minMaxSettings.warning), to: parseInt(configRef.current.danger || minMaxSettings.critical), color: colorToRgba(configRef.current.warningColor, colorYellow)},
-                {thickness: 5, from:  parseInt(configRef.current.danger || minMaxSettings.critical), to: parseInt(max), color: colorToRgba(configRef.current.dangerColor, colorRed)}
+                {
+                    thickness: 5,
+                    from: 0,
+                    to: parseInt(configRef.current.warning || minMaxSettings.warning),
+                    color: colorToRgba(configRef.current.baseColor, colorGreen)
+                },
+                {
+                    thickness: 5,
+                    from: parseInt(configRef.current.warning || minMaxSettings.warning),
+                    to: parseInt(configRef.current.danger || minMaxSettings.critical),
+                    color: colorToRgba(configRef.current.warningColor, colorYellow)
+                },
+                {
+                    thickness: 5,
+                    from: parseInt(configRef.current.danger || minMaxSettings.critical),
+                    to: parseInt(max),
+                    color: colorToRgba(configRef.current.dangerColor, colorRed)
+                }
             ]
         },
         plotOptions: {
@@ -137,6 +174,9 @@ function GaugeWidget(props) {
             {...props}
             createOptions={(...args) => createOptions(...args, props.settings)}
             extractMaxValue={(...args) => maxValue(...args, 'max')}
+            writeDataToSeries={(channelDataRef, optionsRef, configRef) => {
+                optionsRef.current.colors = [getColorForCurrentValue(channelDataRef, configRef, props.settings)];
+            }}
         />
     );
 }

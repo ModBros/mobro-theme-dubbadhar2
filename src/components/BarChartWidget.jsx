@@ -1,11 +1,36 @@
 import Chart from './charts/Chart.container'
 import {backColor, frontColor, maxValue, minValue} from '../utils/charts'
+import {colorToRgba} from '../utils/color'
+
+const colorYellow = '#ffff1e';
+const colorRed = '#ff0000';
+
+function getColorForCurrentValue(channelDataRef, configRef) {
+    const value = parseFloat(mobro.utils.channelData.extractValue(channelDataRef.current));
+    let color = frontColor(configRef);
+
+    if (!value) {
+        return color
+    }
+
+    const warning = parseInt(configRef.current.warning);
+    const danger = parseInt(configRef.current.danger);
+
+    if(danger && value >= danger) {
+        color = colorToRgba(configRef.current.dangerColor, colorRed);
+    } else if(warning && value >= warning) {
+        color = colorToRgba(configRef.current.warningColor, colorYellow);
+    }
+
+    return color;
+}
 
 function createOptions(configRef, layoutConfigRef, channelDataRef, settings, optionsRef) {
     const max = maxValue(configRef, channelDataRef.current, 'max');
+    const min = minValue(configRef, 'min', 0);
 
     return {
-        colors: [backColor(configRef), frontColor(configRef)],
+        colors: [backColor(configRef), getColorForCurrentValue(channelDataRef, configRef)],
         chart: {
             type: 'bar',
             backgroundColor: 'rgba(0, 0, 0, 0)',
@@ -35,10 +60,14 @@ function createOptions(configRef, layoutConfigRef, channelDataRef, settings, opt
             enabled: false
         },
         xAxis: {
-            visible: false
+            visible: false,
+            endOnTick: false
         },
         yAxis: {
-            visible: false
+            visible: false,
+            min: min,
+            max: max,
+            endOnTick: false
         },
         plotOptions: {
             series: {
@@ -82,13 +111,20 @@ function BarChartWidget(props) {
                 'min',
                 'max',
                 'width',
+                'warning',
+                'danger',
                 'height',
                 'frontColor',
-                'backColor'
+                'backColor',
+                'warningColor',
+                'dangerColor',
             ]}
             writeDataToSeries={(channelDataRef, optionsRef, configRef, layoutConfigRef, chartRef) => {
                 optionsRef.current.series[0].data = [Math.max(0, optionsRef.current.yAxis.max - parseFloat(mobro.utils.channelData.extractValue(channelDataRef.current)))]
                 optionsRef.current.series[1].data = [parseFloat(mobro.utils.channelData.extractValue(channelDataRef.current))];
+                optionsRef.current.colors = [
+                    backColor(configRef), getColorForCurrentValue(channelDataRef, configRef)
+                ];
             }}
             adaptOptions={(channelDataRef, optionsRef, configRef) => {
                 optionsRef.current.yAxis.min = minValue(configRef, 'min', null);

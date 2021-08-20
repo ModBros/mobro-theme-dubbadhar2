@@ -104,6 +104,7 @@ function createOptions(configRef, layoutConfigRef, channelDataRef, settings) {
         xAxis: {
             max: max,
             visible: false,
+            endOnTick: false
         },
         yAxis: {
             length: 5,
@@ -114,25 +115,28 @@ function createOptions(configRef, layoutConfigRef, channelDataRef, settings) {
             labels: {
                 enabled: false
             },
+            endOnTick: false,
             min: 0,
-            max: 100,
+            max: max,
             plotBands: [
                 {
                     thickness: 5,
-                    from: 0,
-                    to: parseInt(configRef.current.warning || minMaxSettings.warning),
+                    from: 0.0,
+                    to: parseFloat(configRef.current.warning || minMaxSettings.warning),
                     color: colorToRgba(configRef.current.baseColor, colorGreen)
                 },
                 {
                     thickness: 5,
-                    from: parseInt(configRef.current.warning || minMaxSettings.warning),
-                    to: parseInt(configRef.current.danger || minMaxSettings.critical),
+                    from: parseFloat(configRef.current.warning || minMaxSettings.warning),
+                    to: parseFloat(configRef.current.danger || minMaxSettings.critical),
                     color: colorToRgba(configRef.current.warningColor, colorYellow)
                 },
                 {
+                    zIndex: 10,
                     thickness: 5,
-                    from: parseInt(configRef.current.danger || minMaxSettings.critical),
-                    to: parseInt(max),
+                    from: parseFloat(configRef.current.danger || minMaxSettings.critical),
+                    // kinda ugly but parseFloat(max) kinda doesn't work all the time :(
+                    to: Number.MAX_VALUE,
                     color: colorToRgba(configRef.current.dangerColor, colorRed)
                 }
             ]
@@ -163,7 +167,7 @@ function createOptions(configRef, layoutConfigRef, channelDataRef, settings) {
             }
         },
         series: [{
-            data: [80]
+            data: [0]
         }]
     }
 }

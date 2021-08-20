@@ -14,6 +14,9 @@ mobro.hooks.addWidget({
         channel: {
             type: "channel"
         },
+        lineWidth: {
+            type: "numeric"
+        },
         limits: {
             type: "fieldset",
             label: "Limits",

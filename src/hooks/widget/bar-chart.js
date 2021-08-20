@@ -17,35 +17,38 @@ mobro.hooks.addWidget({
             collapsible: true,
             collapsed: true,
             children: {
-                minAndMax: {
-                    type: 'field-container',
-                    children: [{
-                        width: 6,
-                        children: {
-                            min: {
-                                type: 'numeric'
-                            }
-                        }
-                    }, {
-                        width: 6,
-                        children: {
-                            max: {
-                                type: 'numeric'
-                            }
-                        }
-                    }]
+                min: {
+                    type: 'numeric'
+                },
+                warning: {
+                    type: 'numeric',
+                    info: 'Threshold for yellow (warning).'
+                },
+                warningColor: {
+                    type: 'color'
+                },
+                danger: {
+                    type: 'numeric',
+                    info: 'Threshold for red (danger).'
+                },
+                dangerColor: {
+                    type: 'color'
+                },
+                max: {
+                    type: 'numeric',
+                    info: 'Override maximum value'
                 }
             }
         },
         colors: {
-            type: "fieldset",
-            label: "Colors",
+            type: 'fieldset',
+            label: 'Colors',
             children: {
                 frontColor: {
-                    type: "color"
+                    type: 'color'
                 },
                 backColor: {
-                    type: "color"
+                    type: 'color'
                 }
             }
         }

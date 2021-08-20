@@ -73,6 +73,7 @@ function createOptions(configRef, layoutConfigRef, channelDataRef, settings, opt
                 enabled: false
             },
             enableMouseTracking: false,
+            lineWidth: configRef.current.lineWidth || 2,
             data: optionsRef.current?.series?.[0]?.data ?? (function () {
                 const data = [];
                 const time = (new Date()).getTime();
@@ -136,6 +137,7 @@ function LineChartWidget(props) {
                     'max',
                     'width',
                     'height',
+                    'lineWidth',
                     'lineColor'
                 ]}
                 writeDataToSeries={(channelDataRef, optionsRef, configRef, layoutConfigRef, chartRef) => {
@@ -147,7 +149,7 @@ function LineChartWidget(props) {
                     chartRef.current?.chart?.series?.[0]?.addPoint(point, false, true);
                     chartRef?.chart?.redraw();
                 }}
-                adaptOptions={() => {
+                adaptOptions={(channelDataRef, optionsRef, configRef) => {
                 }}
             />
         </div>

@@ -1,8 +1,8 @@
 import {useState} from 'react';
 import Chart from './charts/Chart.container';
-import {maxValue, minValue} from '../utils/charts'
+import {defaultFontColor, maxValue, minValue} from '../utils/charts'
 import {colorToRgba} from '../utils/color'
-import {getWidgetFontFamily} from '../utils/widget'
+import {getWidgetFontColor, getWidgetFontFamily} from '../utils/widget'
 
 const defaultLineColor = 'rgba(15, 150, 200, 1)';
 
@@ -53,7 +53,8 @@ function createOptions(configRef, layoutConfigRef, channelDataRef, settings, opt
             },
             labels: {
                 style: {
-                    fontFamily: getWidgetFontFamily(configRef.current, layoutConfigRef.current)
+                    fontFamily: getWidgetFontFamily(configRef.current, layoutConfigRef.current),
+                    color: colorToRgba(getWidgetFontColor(configRef.current, layoutConfigRef.current), defaultFontColor)
                 }
             }
         },
@@ -138,7 +139,8 @@ function LineChartWidget(props) {
                     'width',
                     'height',
                     'lineWidth',
-                    'lineColor'
+                    'lineColor',
+                    'widgetFontColor'
                 ]}
                 writeDataToSeries={(channelDataRef, optionsRef, configRef, layoutConfigRef, chartRef) => {
                     const point = [

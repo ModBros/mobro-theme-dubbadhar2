@@ -7,8 +7,8 @@ import {getWidgetFontColor, getWidgetFontFamily} from '../utils/widget'
 const defaultLineColor = 'rgba(15, 150, 200, 1)';
 
 function createOptions(configRef, layoutConfigRef, channelDataRef, settings, optionsRef) {
-    const min = minValue(configRef, 'min', null);
-    const max = maxValue(configRef, null, 'max', null);
+    const min = minValue(configRef, 'min', 0);
+    const max = maxValue(configRef, null, 'max', 0);
 
     return {
         colors: [colorToRgba(configRef.current?.lineColor, defaultLineColor)],
@@ -41,13 +41,10 @@ function createOptions(configRef, layoutConfigRef, channelDataRef, settings, opt
             visible: false,
         },
         yAxis: {
-            endOnTick: true,
+            tickPositions: min || max ? [min, max] : undefined,
             gridLineWidth: 0,
-            startOnTick: true,
             tickAmount: 2,
             tickWidth: 0,
-            min: min,
-            max: max,
             title: {
                 text: undefined
             },

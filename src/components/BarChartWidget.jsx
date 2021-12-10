@@ -32,7 +32,7 @@ function createOptions(configRef, layoutConfigRef, channelDataRef, settings, opt
     return {
         colors: [backColor(configRef), getColorForCurrentValue(channelDataRef, configRef)],
         chart: {
-            type: 'bar',
+            type: !configRef.current.vertical ? 'bar' : 'column',
             backgroundColor: 'rgba(0, 0, 0, 0)',
             animation: {
                 duration: 500
@@ -79,6 +79,10 @@ function createOptions(configRef, layoutConfigRef, channelDataRef, settings, opt
             bar: {
                 // remove border from bar
                 borderWidth: 0
+            },
+            column: {
+                // remove border from column
+                borderWidth: 0
             }
         },
         series: [{
@@ -108,6 +112,8 @@ function BarChartWidget(props) {
             {...chartProps}
             createOptions={createOptions}
             configKeyToListen={[
+                'vertical',
+                'mirror',
                 'min',
                 'max',
                 'width',
@@ -120,11 +126,24 @@ function BarChartWidget(props) {
                 'dangerColor',
             ]}
             writeDataToSeries={(channelDataRef, optionsRef, configRef, layoutConfigRef, chartRef) => {
-                optionsRef.current.series[0].data = [Math.max(0, optionsRef.current.yAxis.max - parseFloat(mobro.utils.channelData.extractValue(channelDataRef.current)))]
-                optionsRef.current.series[1].data = [parseFloat(mobro.utils.channelData.extractValue(channelDataRef.current))];
-                optionsRef.current.colors = [
-                    backColor(configRef), getColorForCurrentValue(channelDataRef, configRef)
+                let data = [
+                    Math.max(0, optionsRef.current.yAxis.max - parseFloat(mobro.utils.channelData.extractValue(channelDataRef.current))),
+                    parseFloat(mobro.utils.channelData.extractValue(channelDataRef.current))
                 ];
+
+                let colors = [
+                    backColor(configRef),
+                    getColorForCurrentValue(channelDataRef, configRef)
+                ];
+
+                if(configRef.current.mirror) {
+                    data = data.reverse();
+                    colors = colors.reverse();
+                }
+
+                optionsRef.current.series[0].data = [data[0]]
+                optionsRef.current.series[1].data = [data[1]];
+                optionsRef.current.colors = colors;
             }}
             adaptOptions={(channelDataRef, optionsRef, configRef) => {
                 optionsRef.current.yAxis.min = minValue(configRef, 'min', null);

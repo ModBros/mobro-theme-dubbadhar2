@@ -11,6 +11,19 @@ mobro.hooks.addWidget({
         channel: {
             type: 'channel'
         },
+        behaviour: {
+            type: 'fieldset',
+            label: 'Behaviour',
+            collapsible: false,
+            children: {
+                vertical: {
+                    type: 'checkbox'
+                },
+                mirror: {
+                    type: 'checkbox'
+                }
+            }
+        },
         limits: {
             type: 'fieldset',
             label: 'Limits',
